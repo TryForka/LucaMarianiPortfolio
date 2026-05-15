@@ -1,0 +1,28 @@
+Got it. Here's the updated prompt — photography added, design instructions stripped out:
+Prompt for Replit:
+Replace all placeholder content with mine. Don't change the design or layout — just swap the content. Remove the store page entirely.
+Name / brand: Luca Mariani — Luca Films. Filmmaker, videographer, and photographer based in Chicago.
+Contact info to use across the site:
+Email: lucafilmsbusiness@gmail.com
+Phone: 224-534-9841
+Instagram: @lucafilms__
+TikTok: @luca.mariani.3
+LinkedIn: linkedin.com/in/luca-mariani-4858852ba
+About Me (replace whatever's there with this):
+I'm Luca Mariani. I shoot concerts, sports, and brand work out of Chicago — video and photo.
+I started with skis on my feet and a camera in my hand — I race for Team Illinois and have competed at the Western High School Skiing Championships in Colorado, so action sports is where my eye was built. That carried over into the rest of my work. I shoot at The Salt Shed for artists like Lord Huron, Indigo De Souza, and The Red Clay Strays. I cut hype films for high school and club sports programs. I do brand work for restaurants and resorts. Two of my films have been nominated for Chicago Student Emmys, and I won one for cinematography.
+What I care about: making athletes and artists look the way the moment actually felt, and giving clients work they can actually use. Clean edits, real story, no filler.
+Available for concerts, sports edits, brand content, weddings, photography, and custom projects. Based in Chicago, will travel.
+Clients & Credits section (use these exact names, group like this):
+Music — Lord Huron, Indigo De Souza, The Red Clay Strays, The Salt Shed (Chicago) Sports — Alpine Valley Resort, Vail Resorts, NSE Athletics Hospitality — Oovio
+Awards:
+Chicago Student Emmy — Cinematography
+Two-time Chicago Student Emmy nominee
+Services / what I shoot:
+Concert and live music coverage (video + photo)
+Sports hype films and photography (skiing, lacrosse, basketball, hockey, etc.)
+Brand and commercial work
+Weddings
+Photography
+Custom projects
+Make sure there's a Photography section/page alongside the video work so both are represented. Keep contact info easy to find on every page.

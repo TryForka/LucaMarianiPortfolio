@@ -11,10 +11,10 @@ export default function HeroSection() {
         01 · INTRO
       </div>
       <div className="absolute top-20 right-4 font-mono text-[10px] text-muted-foreground tracking-widest uppercase text-right">
-        FRAME 0001 / 2847
+        FRAME 0001 / 2026
       </div>
       <div className="absolute top-32 left-4 font-mono text-[10px] text-white tracking-widest uppercase">
-        DREW HALLÉ · PHOTOGRAPHY
+        LUCA MARIANI · LUCA FILMS
       </div>
 
       {/* Center content */}
@@ -27,9 +27,9 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-white font-black leading-[0.8] tracking-tighter uppercase"
-          style={{ fontSize: "clamp(120px, 20vw, 280px)" }}
+          style={{ fontSize: "clamp(100px, 18vw, 260px)" }}
         >
-          DREW<br />HALLÉ
+          LUCA<br />MARIANI
         </motion.h1>
 
         <motion.p 
@@ -38,7 +38,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mt-12 font-mono text-xs md:text-sm tracking-widest text-muted-foreground uppercase"
         >
-          PHOTOGRAPHER & VIDEOGRAPHER — WORLDWIDE
+          FILMMAKER · VIDEOGRAPHER · PHOTOGRAPHER — CHICAGO
         </motion.p>
         
         <motion.p 
@@ -71,7 +71,7 @@ export default function HeroSection() {
 
       {/* Nav links section directly below hero contextually */}
       <div className="w-full mt-32 border-t border-white/10 pt-16 pb-24 px-4 flex flex-col items-center">
-        <p className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase mb-12">EST. MMXVII · NYC</p>
+        <p className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase mb-12">EST. MMXIX · CHICAGO</p>
         
         <div className="font-mono text-xs tracking-widest text-white/60 mb-8 uppercase">[ SCROLL TO OPEN LENS ]</div>
         
@@ -80,7 +80,7 @@ export default function HeroSection() {
           <span className="text-white/20 hidden md:inline">·</span>
           <a href="#film" className="hover:text-red-500 transition-colors">FILM</a>
           <span className="text-white/20 hidden md:inline">·</span>
-          <a href="#store" className="hover:text-red-500 transition-colors">STORE</a>
+          <a href="#contact" className="hover:text-red-500 transition-colors">CONTACT</a>
         </div>
         
         <div className="flex flex-col items-center gap-2 font-mono text-[10px] tracking-widest text-white/40 uppercase">

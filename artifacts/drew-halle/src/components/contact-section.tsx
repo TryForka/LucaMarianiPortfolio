@@ -13,7 +13,7 @@ export default function ContactSection() {
     <section className="w-full bg-black py-24 border-t border-white/10" id="contact">
       <div className="max-w-[1600px] mx-auto px-4 md:px-8">
         <div className="flex items-end gap-4 mb-16 uppercase">
-          <span className="font-mono text-2xl md:text-4xl text-white/50">08</span>
+          <span className="font-mono text-2xl md:text-4xl text-white/50">07</span>
           <h2 className="font-sans text-5xl md:text-7xl font-bold tracking-widest text-white leading-none">
             GET IN TOUCH
           </h2>
@@ -25,11 +25,11 @@ export default function ContactSection() {
             <div className="font-mono text-xs tracking-widest uppercase border border-white/20 p-6 bg-[#0a0a0a]">
               <div className="border-b border-white/10 pb-4 mb-4 flex justify-between">
                 <span className="text-white/50">PRODUCTION</span>
-                <span className="text-white">DREW HALLÉ</span>
+                <span className="text-white">LUCA FILMS</span>
               </div>
               <div className="border-b border-white/10 pb-4 mb-4 flex justify-between">
                 <span className="text-white/50">SCENE</span>
-                <span className="text-white">08</span>
+                <span className="text-white">07</span>
               </div>
               <div className="border-b border-white/10 pb-4 mb-4 flex justify-between">
                 <span className="text-white/50">TAKE</span>
@@ -42,14 +42,17 @@ export default function ContactSection() {
             </div>
 
             <div className="mt-16 font-mono text-xs tracking-widest text-white/60 space-y-4">
-              <p className="uppercase text-white">■ SCENE 06 Drew Hallé</p>
-              <a href="mailto:drew@drewhalle.com" className="block hover:text-white transition-colors">
-                drew@drewhalle.com
+              <p className="uppercase text-white">■ LUCA MARIANI</p>
+              <a href="mailto:lucafilmsbusiness@gmail.com" className="block hover:text-white transition-colors">
+                lucafilmsbusiness@gmail.com
+              </a>
+              <a href="tel:2245349841" className="block hover:text-white transition-colors">
+                224-534-9841
               </a>
               <div className="flex gap-6 pt-4 border-t border-white/10">
-                <a href="https://instagram.com/drewhalle" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors uppercase">IG</a>
-                <a href="https://linkedin.com/in/drewhalle" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors uppercase">LI</a>
-                <a href="https://vimeo.com/drewhalle" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors uppercase">VM</a>
+                <a href="https://instagram.com/lucafilms__" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors uppercase">IG</a>
+                <a href="https://www.tiktok.com/@luca.mariani.3" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors uppercase">TT</a>
+                <a href="https://linkedin.com/in/luca-mariani-4858852ba" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors uppercase">LI</a>
               </div>
             </div>
           </div>

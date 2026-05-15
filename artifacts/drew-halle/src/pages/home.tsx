@@ -5,7 +5,6 @@ import AboutSection from "@/components/about-section";
 import FilmSection from "@/components/film-section";
 import GallerySection from "@/components/gallery-section";
 import PressSection from "@/components/press-section";
-import StoreSection from "@/components/store-section";
 import ContactSection from "@/components/contact-section";
 import Footer from "@/components/footer";
 
@@ -20,7 +19,6 @@ export default function Home() {
         <FilmSection />
         <GallerySection />
         <PressSection />
-        <StoreSection />
         <ContactSection />
       </main>
       <Footer />

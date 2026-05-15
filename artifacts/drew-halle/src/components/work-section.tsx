@@ -5,28 +5,19 @@ const CARDS = [
     id: "N001",
     title: "PHOTO",
     titleSplit: "GRAPHY",
-    category: "Still Photography",
-    meta: "72 FRAMES · 2017—2026",
+    category: "Concert & Sports Photography",
+    meta: "STILLS · 2019—2026",
     image: "https://static1.squarespace.com/static/61461a32bf91ca2c3266e5e9/t/69e402867fa26f6c418ac733/1776550552216/_MAH3562-Enhanced-NR2.jpg",
-    link: "https://www.drewhalle.com/photography"
+    link: "#photography"
   },
   {
     id: "N002",
-    title: "VIDEO",
-    titleSplit: "GRAPHY",
-    category: "Film & Motion",
-    meta: "12 FILMS · LIVE",
+    title: "FILM &",
+    titleSplit: "MOTION",
+    category: "Sports & Concert Film",
+    meta: "FILMS · LIVE",
     image: "https://static1.squarespace.com/static/61461a32bf91ca2c3266e5e9/t/69ec25f79bc55a01653a1753/1777083907548/_MAH7246-Enhanced-NR.jpg",
-    link: "https://www.drewhalle.com/videography"
-  },
-  {
-    id: "N003",
-    title: "THE",
-    titleSplit: "STORE",
-    category: "Lightroom Presets",
-    meta: "LIGHTROOM PRESETS",
-    image: "https://static1.squarespace.com/static/61461a32bf91ca2c3266e5e9/t/69ec265a125ef53a4a78b615/1777084015971/DH_1.jpg",
-    link: "https://drewhalle.squarespace.com/store"
+    link: "#film"
   }
 ];
 
@@ -42,7 +33,7 @@ export default function WorkSection() {
             </h2>
           </div>
           <div className="hidden md:flex flex-col items-end gap-1 font-mono text-[10px] tracking-widest text-muted-foreground">
-            <p>REEL — DREW HALLÉ · MMXVII / MMXXVI</p>
+            <p>REEL — LUCA MARIANI · MMXIX / MMXXVI</p>
             <p className="flex items-center gap-2 text-white">
               <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
               REC · N001
@@ -50,18 +41,17 @@ export default function WorkSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-4xl">
           {CARDS.map((card, idx) => (
             <motion.a 
               href={card.link}
-              target="_blank"
-              rel="noopener noreferrer"
               key={card.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: idx * 0.1 }}
               className="group relative flex flex-col gap-6 w-full cursor-pointer"
+              data-testid={`card-work-${card.id}`}
             >
               <div className="relative aspect-[3/4] w-full overflow-hidden bg-white/5">
                 <div className="absolute top-4 left-4 z-10 font-mono text-[10px] tracking-widest text-white uppercase mix-blend-difference">
@@ -94,7 +84,7 @@ export default function WorkSection() {
         <div className="flex items-center justify-between border-t border-white/10 pt-8 uppercase font-mono text-[10px] tracking-widest">
           <p className="text-white/60">SCROLL · CLICK TO ENTER →</p>
           <div className="flex items-center gap-8">
-            <span className="text-white/40">01 / 03</span>
+            <span className="text-white/40">01 / 02</span>
             <span className="text-white flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
               REC · 24.976
