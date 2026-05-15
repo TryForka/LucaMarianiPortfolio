@@ -74,7 +74,7 @@ export default function HeroSection() {
           <span className="text-white/20 hidden md:inline">·</span>
           <a href="#film" className="hover:text-red-500 transition-colors font-bold">FILM</a>
           <span className="text-white/20 hidden md:inline">·</span>
-          <a href="#contact" className="hover:text-red-500 transition-colors">CONTACT</a>
+          <a href="#contact" className="hover:text-red-500 transition-colors font-bold">CONTACT</a>
         </div>
         
         <div className="flex flex-col items-center gap-2 font-mono text-[10px] tracking-widest text-white/40 uppercase">
