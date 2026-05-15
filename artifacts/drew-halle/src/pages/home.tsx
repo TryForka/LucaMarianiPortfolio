@@ -1,6 +1,5 @@
 import Nav from "@/components/nav";
 import HeroSection from "@/components/hero-section";
-import ReelSection from "@/components/reel-section";
 import WorkSection from "@/components/work-section";
 import AboutSection from "@/components/about-section";
 import FilmSection from "@/components/film-section";
@@ -15,7 +14,6 @@ export default function Home() {
       <Nav />
       <main className="w-full">
         <HeroSection />
-        <ReelSection />
         <WorkSection />
         <AboutSection />
         <FilmSection />
