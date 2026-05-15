@@ -62,7 +62,8 @@ export default function HeroSection() {
   }, [triggerGate]);
 
   const showGate = phase === "gate" || phase === "fading";
-  const showVideo = phase === "video" || phase === "unlocked";
+  // "unlocked" is intentionally excluded — removing video from the DOM lets the page become accessible
+  const showVideo = phase === "video";
 
   return (
     <>
@@ -171,18 +172,21 @@ export default function HeroSection() {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.2, ease: "easeInOut" }}
           >
-            <iframe
-              width="560"
-              height="315"
-              src="https://www.youtube.com/embed/EWRG-pAbhFY?si=cKkJ0s-bkFqt9zCJ&controls=0&autoplay=1&mute=1"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-              className="absolute inset-0 w-full h-full pointer-events-none"
-              style={{ border: "none" }}
-            />
+            {/* clip-path hides YouTube title bar (top) and controls bar (bottom) without scaling */}
+            <div className="absolute inset-0 overflow-hidden" style={{ clipPath: "inset(48px 0px)" }}>
+              <iframe
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/EWRG-pAbhFY?si=cKkJ0s-bkFqt9zCJ&controls=0&autoplay=1&mute=1"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                style={{ border: "none" }}
+              />
+            </div>
 
             {/* Dark vignette */}
             <div className="absolute inset-0 bg-black/30 pointer-events-none" />
