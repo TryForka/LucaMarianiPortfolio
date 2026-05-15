@@ -68,9 +68,9 @@ export default function ReelSection() {
         )}
         {/* Dark vignette */}
         <div className="absolute inset-0 bg-black/40 pointer-events-none" />
-        {/* Cover YouTube title bar (top) and progress/controls bar (bottom) */}
-        <div className="absolute top-0 left-0 right-0 h-16 bg-black pointer-events-none z-10" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-black pointer-events-none z-10" />
+        {/* Grain strips masking YouTube UI at top and bottom */}
+        <div className="absolute top-0 left-0 right-0 h-20 pointer-events-none z-10 bg-black mix-blend-normal" style={{ backgroundImage: NOISE_SVG, backgroundSize: "200px 200px" }} />
+        <div className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none z-10 bg-black mix-blend-normal" style={{ backgroundImage: NOISE_SVG, backgroundSize: "200px 200px" }} />
       </motion.div>
 
       {/* GRAIN LAYER — fades out as you scroll in */}
