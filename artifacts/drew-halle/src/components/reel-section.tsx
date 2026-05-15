@@ -58,22 +58,13 @@ export default function ReelSection() {
           </div>
         ) : (
           /* Oversized iframe — pushes YouTube chrome (title bar, logo) off-screen */
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <iframe
-              src={buildSrc()}
-              allow="autoplay; fullscreen"
-              className="absolute pointer-events-none"
-              style={{
-                border: "none",
-                width: "160%",
-                height: "160%",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-              }}
-              title="Luca Mariani — Cinematography Reel"
-            />
-          </div>
+          <iframe
+            src={buildSrc()}
+            allow="autoplay; fullscreen"
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            style={{ border: "none" }}
+            title="Luca Mariani — Cinematography Reel"
+          />
         )}
         {/* Dark vignette */}
         <div className="absolute inset-0 bg-black/40 pointer-events-none" />
