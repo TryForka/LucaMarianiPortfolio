@@ -11,7 +11,7 @@ const NOISE_SVG = 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=
 //     e.g. if your URL is vimeo.com/123456789 → use "123456789"
 // ─────────────────────────────────────────────
 const SOURCE: "youtube" | "vimeo" = "youtube";
-const VIDEO_ID = "YOUR_VIDEO_ID_HERE";
+const VIDEO_ID = "EWRG-pAbhFY";
 
 function buildSrc() {
   if (SOURCE === "vimeo") {
