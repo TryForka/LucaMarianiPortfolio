@@ -57,20 +57,21 @@ export default function ReelSection() {
             </p>
           </div>
         ) : (
-          /* Oversized iframe — pushes YouTube chrome (title bar, logo) off-screen */
           <iframe
-            src={buildSrc()}
-            allow="autoplay; fullscreen"
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/EWRG-pAbhFY?si=cKkJ0s-bkFqt9zCJ&controls=0"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
             className="absolute inset-0 w-full h-full pointer-events-none"
             style={{ border: "none" }}
-            title="Luca Mariani — Cinematography Reel"
           />
         )}
         {/* Dark vignette */}
         <div className="absolute inset-0 bg-black/40 pointer-events-none" />
-        {/* Grain strips masking YouTube UI at top and bottom */}
-        <div className="absolute top-0 left-0 right-0 h-20 pointer-events-none z-10 bg-black mix-blend-normal" style={{ backgroundImage: NOISE_SVG, backgroundSize: "200px 200px" }} />
-        <div className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none z-10 bg-black mix-blend-normal" style={{ backgroundImage: NOISE_SVG, backgroundSize: "200px 200px" }} />
       </motion.div>
 
       {/* GRAIN LAYER — fades out as you scroll in */}
