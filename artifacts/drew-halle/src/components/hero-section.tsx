@@ -271,10 +271,6 @@ export default function HeroSection() {
             <span className="text-white/20 hidden md:inline">·</span>
             <a href="#contact" data-testid="link-contact" className="hover:text-red-500 transition-colors font-bold">CONTACT</a>
           </div>
-          <div className="flex flex-col items-center gap-2 font-mono text-[10px] tracking-widest text-white/30 uppercase">
-            <p>ƒ/1.4 · 1/250s · ISO 3200</p>
-            <p>50MM · SUMMILUX</p>
-          </div>
         </div>
       </section>
     </>
