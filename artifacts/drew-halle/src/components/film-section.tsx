@@ -12,7 +12,7 @@ export default function FilmSection() {
             </h2>
           </div>
           <a 
-            href="https://www.drewhalle.com/videography" 
+            href="https://www.lucafilms.com/videography" 
             target="_blank" 
             rel="noopener noreferrer"
             className="font-mono text-[10px] tracking-widest text-white hover:text-red-500 transition-colors"

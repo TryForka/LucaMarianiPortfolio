@@ -188,7 +188,7 @@ export default function StoreSection() {
 
         <div className="mt-8 pt-8 border-t border-white/10 text-center">
           <a 
-            href="https://www.drewhalle.com/store" 
+            href="https://www.lucafilms.com/store" 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-block border border-white px-8 py-4 font-mono text-xs tracking-widest text-white hover:bg-white hover:text-black transition-colors uppercase"

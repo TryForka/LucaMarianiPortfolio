@@ -23,7 +23,7 @@ export default function GallerySection() {
             </h2>
           </div>
           <a 
-            href="https://www.drewhalle.com/photography" 
+            href="https://www.lucafilms.com/photography" 
             target="_blank" 
             rel="noopener noreferrer"
             className="font-mono text-[10px] tracking-widest text-white hover:text-red-500 transition-colors"
