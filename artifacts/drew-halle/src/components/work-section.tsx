@@ -93,16 +93,6 @@ export default function WorkSection() {
           ))}
         </div>
 
-        <div className="flex items-center justify-between border-t border-white/10 pt-8 uppercase font-mono text-[10px] tracking-widest">
-          <p className="text-white/60">SCROLL · CLICK TO ENTER →</p>
-          <div className="flex items-center gap-8">
-            <span className="text-white/40">01 / 02</span>
-            <span className="text-white flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
-              REC · 24.976
-            </span>
-          </div>
-        </div>
       </div>
     </section>
   );
