@@ -95,7 +95,6 @@ export default function HeroSection() {
           will-change: transform;
         }
       `}</style>
-
       {/* ── GATE OVERLAY: fixed, fades out on scroll ── */}
       <AnimatePresence>
         {showGate && (
@@ -160,7 +159,6 @@ export default function HeroSection() {
           </motion.div>
         )}
       </AnimatePresence>
-
       {/* ── HERO SECTION: always in page flow ── */}
       <section className="relative w-full bg-black overflow-hidden" id="hero">
 
@@ -262,7 +260,7 @@ export default function HeroSection() {
             className="absolute inset-0 pointer-events-none opacity-20 mix-blend-screen"
             style={{ backgroundImage: NOISE_SVG, backgroundSize: "200px 200px" }}
           />
-          <p className="font-mono text-[10px] tracking-widest text-white/40 uppercase mb-12">EST. MMXIX · CHICAGO</p>
+          <p className="font-mono text-[10px] tracking-widest text-white/40 uppercase mb-12">EST. LUCAFILMS · CHICAGO</p>
           <div className="font-mono text-xs tracking-widest text-white/40 mb-8 uppercase">[ SELECT A CATEGORY ]</div>
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 font-sans font-medium text-4xl md:text-6xl tracking-widest uppercase text-white mb-16">
             <a href="#photography" data-testid="link-photography" className="hover:text-red-500 transition-colors font-bold">PHOTOGRAPHY</a>
