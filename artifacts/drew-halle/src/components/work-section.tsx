@@ -41,7 +41,7 @@ export default function WorkSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-4xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           {CARDS.map((card, idx) => (
             <motion.a
               href={card.link}
