@@ -18,7 +18,7 @@ function buildSrc() {
   return `https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1`;
 }
 
-const isPlaceholder = VIDEO_ID === "YOUR_VIDEO_ID_HERE";
+const isPlaceholder = (VIDEO_ID as string) === "YOUR_VIDEO_ID_HERE";
 
 export default function ReelSection() {
   const sectionRef = useRef<HTMLElement>(null);
