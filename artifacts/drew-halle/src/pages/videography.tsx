@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 
 type Video = {
   id: string;
-  youtubeId: string;
   title: string;
-  client?: string;
+  src: string;
+  aspect: "16/9" | "9/16";
+  allow?: string;
+  referrerPolicy?: string;
 };
 
 type Category = {
@@ -18,62 +20,145 @@ type Category = {
   videos: Video[];
 };
 
+const ALLOW_STD = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+const REF_STD = "strict-origin-when-cross-origin";
+
 const CATEGORIES: Category[] = [
   {
     key: "music",
     label: "MUSIC",
     sub: "Concert films · Live performances · Artist narratives",
     videos: [
-      // Add your YouTube video IDs here — e.g. { id: "m1", youtubeId: "dQw4w9WgXcQ", title: "Lord Huron @ The Salt Shed", client: "Lord Huron" }
+      {
+        id: "m1",
+        title: "Red Clay Strays",
+        src: "https://www.youtube.com/embed/r_59JjsZaz4?modestbranding=1&rel=0&playsinline=1",
+        aspect: "9/16",
+        allow: ALLOW_STD,
+      },
     ],
   },
   {
     key: "sports",
     label: "SPORTS",
     sub: "Athletic campaigns · Event coverage · Brand films",
-    videos: [],
+    videos: [
+      {
+        id: "s1",
+        title: "Roll South",
+        src: "https://www.youtube-nocookie.com/embed/XG2WVE4Y0cg?si=u48GD5YMB6n6GxiH&controls=0",
+        aspect: "16/9",
+        allow: ALLOW_STD,
+        referrerPolicy: REF_STD,
+      },
+      {
+        id: "s2",
+        title: "Glenbrook South Football",
+        src: "https://www.youtube-nocookie.com/embed/u4KPLhTTo3g?si=V7RTadZUw6uKyaJp&controls=0",
+        aspect: "16/9",
+        allow: ALLOW_STD,
+        referrerPolicy: REF_STD,
+      },
+      {
+        id: "s3",
+        title: "Glenbrook South Hockey",
+        src: "https://www.youtube-nocookie.com/embed/vSOkSNK1-E4?si=QA3ee9odZ2WRs7Jj&controls=0",
+        aspect: "16/9",
+        allow: ALLOW_STD,
+        referrerPolicy: REF_STD,
+      },
+      {
+        id: "s4",
+        title: "Crystal Ridge Park Follow Cam",
+        src: "https://www.youtube.com/embed/VwkKoKVDU3g?modestbranding=1&rel=0&playsinline=1",
+        aspect: "9/16",
+        allow: ALLOW_STD,
+      },
+      {
+        id: "s5",
+        title: "Alpine Valley Park Follow Cam #1",
+        src: "https://www.youtube.com/embed/o5AmOaYRXjw?modestbranding=1&rel=0&playsinline=1",
+        aspect: "9/16",
+        allow: ALLOW_STD,
+      },
+      {
+        id: "s6",
+        title: "Alpine Valley Park Follow Cam #3",
+        src: "https://www.youtube.com/embed/p-lvvaiAmOQ?modestbranding=1&rel=0&playsinline=1",
+        aspect: "9/16",
+        allow: ALLOW_STD,
+      },
+      {
+        id: "s7",
+        title: "Alpine Valley Park Follow Cam #2",
+        src: "https://www.youtube.com/embed/_H6hO0xat2s?modestbranding=1&rel=0&playsinline=1",
+        aspect: "9/16",
+        allow: ALLOW_STD,
+      },
+    ],
   },
   {
     key: "hospitality",
     label: "HOSPITALITY\n& EVENTS",
     sub: "Venues · Brand showcases · Weddings & celebrations",
-    videos: [],
+    videos: [
+      {
+        id: "h1",
+        title: "Ovvio",
+        src: "https://www.youtube-nocookie.com/embed/vXhoXWMxVr0?si=hyk8Th8K5eyMKj-_&controls=0",
+        aspect: "16/9",
+        allow: ALLOW_STD,
+        referrerPolicy: REF_STD,
+      },
+      {
+        id: "h2",
+        title: "Ovvio",
+        src: "https://www.youtube-nocookie.com/embed/STKgmNhSFP0?si=CTtxMoX7NUXfw3bd&controls=0",
+        aspect: "16/9",
+        allow: ALLOW_STD,
+        referrerPolicy: REF_STD,
+      },
+      {
+        id: "h3",
+        title: "Alpine Valley Resorts Wedding",
+        src: "https://www.youtube-nocookie.com/embed/ROQukR7EJgA?si=yfDztzVF7diBHTo4&controls=0",
+        aspect: "16/9",
+        allow: ALLOW_STD,
+        referrerPolicy: REF_STD,
+      },
+      {
+        id: "h4",
+        title: "Lake Forest Chiro",
+        // src preserved exactly as provided — includes autoplay/mute/loop per original embed
+        src: "https://www.youtube.com/embed/xlhhCYGaEqo?si=3GockmbNT9IHYxb0&controls=0&modestbranding=1&rel=0&playsinline=1&autoplay=1&mute=1&loop=1&playlist=xlhhCYGaEqo",
+        aspect: "9/16",
+        allow: ALLOW_STD,
+      },
+    ],
   },
 ];
 
-function VideoCard({ video, onClick }: { video: Video; onClick: () => void }) {
+function VideoCard({ video }: { video: Video }) {
+  const isPortrait = video.aspect === "9/16";
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      onClick={onClick}
-      className="group relative aspect-video bg-white/5 overflow-hidden cursor-pointer"
+      className={`relative w-full bg-white/5 border border-white/10 overflow-hidden ${
+        isPortrait ? "aspect-[9/16]" : "aspect-video"
+      }`}
     >
-      <img
-        src={`https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`}
-        alt={video.title}
-        className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
+      <iframe
+        className="absolute inset-0 w-full h-full"
+        src={video.src}
+        title={video.title}
+        frameBorder="0"
+        allow={video.allow}
+        referrerPolicy={video.referrerPolicy as React.IframeHTMLAttributes<HTMLIFrameElement>["referrerPolicy"]}
+        allowFullScreen
       />
-      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500" />
-
-      {/* Play button */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-14 h-14 rounded-full border border-white/60 flex items-center justify-center group-hover:border-white group-hover:scale-110 transition-all duration-300">
-          <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        </div>
-      </div>
-
-      {/* Label */}
-      <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-        {video.client && (
-          <p className="font-mono text-[9px] tracking-widest text-white/50 uppercase mb-1">{video.client}</p>
-        )}
-        <p className="font-sans font-bold text-sm tracking-wide text-white uppercase leading-tight">{video.title}</p>
-      </div>
     </motion.div>
   );
 }
@@ -91,50 +176,7 @@ function PlaceholderCard() {
   );
 }
 
-function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
-  return (
-    <AnimatePresence>
-      <motion.div
-        key="modal"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-12"
-        onClick={onClose}
-      >
-        <motion.div
-          initial={{ scale: 0.95, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.95, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="relative w-full max-w-5xl aspect-video"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <iframe
-            className="w-full h-full"
-            src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&controls=1`}
-            title={video.title}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </motion.div>
-
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-6 right-6 font-mono text-[10px] tracking-widest text-white/60 hover:text-white uppercase flex items-center gap-2 transition-colors"
-        >
-          <span>ESC · CLOSE</span>
-          <span className="text-base leading-none">×</span>
-        </button>
-      </motion.div>
-    </AnimatePresence>
-  );
-}
-
 export default function Videography() {
-  const [activeVideo, setActiveVideo] = useState<Video | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const filtered = activeCategory
@@ -230,29 +272,18 @@ export default function Videography() {
             </div>
 
             {/* Video grid */}
-            {cat.videos.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {cat.videos.map((v) => (
-                  <VideoCard key={v.id} video={v} onClick={() => setActiveVideo(v)} />
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[0, 1, 2].map((i) => (
-                  <PlaceholderCard key={i} />
-                ))}
-              </div>
-            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {cat.videos.map((v) => (
+                <VideoCard key={v.id} video={v} />
+              ))}
+              {cat.videos.length === 0 &&
+                [0, 1, 2].map((i) => <PlaceholderCard key={i} />)}
+            </div>
           </motion.section>
         ))}
       </main>
 
       <Footer />
-
-      {/* Video modal */}
-      {activeVideo && (
-        <VideoModal video={activeVideo} onClose={() => setActiveVideo(null)} />
-      )}
     </div>
   );
 }
