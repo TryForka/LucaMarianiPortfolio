@@ -22,7 +22,7 @@ export default function AboutSection() {
             viewport={{ once: true }}
             className="font-sans text-3xl md:text-5xl lg:text-6xl font-semibold leading-[0.9] tracking-widest text-white uppercase mb-12"
           >
-            CONCERT PHOTOGRAPHY. SPORTS FILMS. BRAND WORK. BASED IN CHICAGO — AVAILABLE WORLDWIDE.
+            CONCERTS. SPORTS. BRANDS. SHOT OUT OF CHICAGO, ANYWHERE YOU NEED ME.
           </motion.h3>
 
           <motion.div
