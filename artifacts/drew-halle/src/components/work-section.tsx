@@ -8,7 +8,7 @@ const CARDS = [
     line2: "GRAPHY",
     category: "Concert & Sports Photography",
     meta: "STILLS · 2019—2026",
-    image: "https://static1.squarespace.com/static/61461a32bf91ca2c3266e5e9/t/69e402867fa26f6c418ac733/1776550552216/_MAH3562-Enhanced-NR2.jpg",
+    image: "/work-photography.jpg",
     link: "#photography"
   },
   {
@@ -17,7 +17,7 @@ const CARDS = [
     line2: "GRAPHY",
     category: "Sports & Concert Film",
     meta: "FILMS · LIVE",
-    image: "https://static1.squarespace.com/static/61461a32bf91ca2c3266e5e9/t/69ec25f79bc55a01653a1753/1777083907548/_MAH7246-Enhanced-NR.jpg",
+    image: "/work-videography.jpg",
     link: "/videography"
   }
 ];
