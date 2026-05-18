@@ -164,10 +164,8 @@ function VideoCard({ video }: { video: Video }) {
       transition={{ duration: 0.5 }}
       className="flex flex-col gap-0 w-full"
     >
-      {/* Clip-path hides YouTube title bar (top) and progress/controls bar (bottom) */}
       <div
         className={`relative w-full bg-black overflow-hidden ${isPortrait ? "aspect-[9/16]" : "aspect-video"}`}
-        style={{ clipPath: "inset(48px 0px)" }}
       >
         <iframe
           ref={iframeRef}
