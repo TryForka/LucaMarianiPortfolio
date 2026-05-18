@@ -1,6 +1,6 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Link } from "wouter";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 
@@ -70,28 +70,28 @@ const CATEGORIES: Category[] = [
       {
         id: "s4",
         title: "Crystal Ridge Park Follow Cam",
-        src: "https://www.youtube.com/embed/VwkKoKVDU3g?modestbranding=1&rel=0&playsinline=1",
+        src: "https://www.youtube.com/embed/VwkKoKVDU3g?modestbranding=1&rel=0&playsinline=1&controls=0",
         aspect: "9/16",
         allow: ALLOW_STD,
       },
       {
         id: "s5",
         title: "Alpine Valley Park Follow Cam #1",
-        src: "https://www.youtube.com/embed/o5AmOaYRXjw?modestbranding=1&rel=0&playsinline=1",
+        src: "https://www.youtube.com/embed/o5AmOaYRXjw?modestbranding=1&rel=0&playsinline=1&controls=0",
         aspect: "9/16",
         allow: ALLOW_STD,
       },
       {
         id: "s6",
         title: "Alpine Valley Park Follow Cam #3",
-        src: "https://www.youtube.com/embed/p-lvvaiAmOQ?modestbranding=1&rel=0&playsinline=1",
+        src: "https://www.youtube.com/embed/p-lvvaiAmOQ?modestbranding=1&rel=0&playsinline=1&controls=0",
         aspect: "9/16",
         allow: ALLOW_STD,
       },
       {
         id: "s7",
         title: "Alpine Valley Park Follow Cam #2",
-        src: "https://www.youtube.com/embed/_H6hO0xat2s?modestbranding=1&rel=0&playsinline=1",
+        src: "https://www.youtube.com/embed/_H6hO0xat2s?modestbranding=1&rel=0&playsinline=1&controls=0",
         aspect: "9/16",
         allow: ALLOW_STD,
       },
@@ -137,16 +137,13 @@ const CATEGORIES: Category[] = [
   },
 ];
 
-function VideoCard({ video }: { video: Video }) {
-  const [playing, setPlaying] = useState(false);
+// ── Cinema Player ──────────────────────────────────────────────────────────────
+
+function CinemaPlayer({ video, onClose }: { video: Video; onClose: () => void }) {
   const [muted, setMuted] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const isPortrait = video.aspect === "9/16";
 
-  // Extract video ID from src for thumbnail
-  const videoId = video.src.match(/\/embed\/([^?]+)/)?.[1] ?? "";
-
-  // Build active src: preserve all original params, add autoplay + enablejsapi
   const activeSrc = (() => {
     let s = video.src;
     if (!s.includes("enablejsapi")) s += "&enablejsapi=1";
@@ -165,43 +162,58 @@ function VideoCard({ video }: { video: Video }) {
     setMuted(next);
   }, [muted]);
 
+  // Escape key closes player
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  // Lock body scroll while open
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="flex flex-col gap-0 w-full"
+      key="cinema"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+      className="fixed inset-0 z-[200] bg-black flex items-center justify-center"
+      onClick={onClose}
     >
-      <div
-        className={`relative w-full bg-black overflow-hidden ${isPortrait ? "aspect-[9/16]" : "aspect-video"}`}
+      {/* Expanding video container */}
+      <motion.div
+        initial={{ scale: 0.55, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.85, opacity: 0 }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        className={`relative flex flex-col ${
+          isPortrait
+            ? "h-[88dvh] w-auto aspect-[9/16]"
+            : "w-[92vw] max-w-6xl aspect-video"
+        }`}
+        onClick={(e) => e.stopPropagation()}
       >
-        {!playing ? (
-          /* Façade: thumbnail + play button — zero YouTube chrome visible */
-          <div
-            className="absolute inset-0 cursor-pointer group"
-            onClick={() => setPlaying(true)}
+        {/* HUD top bar */}
+        <div className="absolute -top-8 inset-x-0 flex items-center justify-between z-10 px-1">
+          <button
+            onClick={onClose}
+            className="font-mono text-[10px] tracking-widest uppercase text-white/60 hover:text-white transition-colors flex items-center gap-2"
           >
-            <img
-              src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
-              alt={video.title}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src =
-                  `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-              }}
-            />
-            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full border border-white/70 flex items-center justify-center group-hover:border-white group-hover:scale-110 transition-all duration-300">
-                <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-            </div>
+            ← BACK
+          </button>
+          <div className="flex items-center gap-2 font-mono text-[10px] tracking-widest text-white/40 uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+            REC
           </div>
-        ) : (
-          /* Iframe loads only after click, with autoplay so it starts immediately */
+        </div>
+
+        {/* Video frame */}
+        <div className="relative w-full h-full border border-white/10 overflow-hidden bg-black">
           <iframe
             ref={iframeRef}
             className="absolute inset-0 w-full h-full"
@@ -212,16 +224,16 @@ function VideoCard({ video }: { video: Video }) {
             referrerPolicy={video.referrerPolicy as React.IframeHTMLAttributes<HTMLIFrameElement>["referrerPolicy"]}
             allowFullScreen
           />
-        )}
-      </div>
+        </div>
 
-      {/* Mute toggle — subtle bar below the video */}
-      <div className="flex items-center justify-between border border-t-0 border-white/10 px-3 py-2 bg-black">
-        <p className="font-mono text-[9px] tracking-widest text-white/30 uppercase truncate">{video.title}</p>
-        {playing && (
+        {/* HUD bottom bar */}
+        <div className="absolute -bottom-8 inset-x-0 flex items-center justify-between z-10 px-1">
+          <p className="font-mono text-[10px] tracking-widest text-white/30 uppercase truncate max-w-[60%]">
+            {video.title}
+          </p>
           <button
             onClick={toggleMute}
-            className="flex items-center gap-1.5 font-mono text-[9px] tracking-widest uppercase text-white/40 hover:text-white transition-colors shrink-0 ml-4"
+            className="flex items-center gap-1.5 font-mono text-[10px] tracking-widest uppercase text-white/40 hover:text-white transition-colors"
           >
             {muted ? (
               <>
@@ -239,11 +251,60 @@ function VideoCard({ video }: { video: Video }) {
               </>
             )}
           </button>
-        )}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ── Video Card (thumbnail only — cinema player handles playback) ───────────────
+
+function VideoCard({ video, onPlay }: { video: Video; onPlay: (v: Video) => void }) {
+  const isPortrait = video.aspect === "9/16";
+  const videoId = video.src.match(/\/embed\/([^?]+)/)?.[1] ?? "";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col gap-0 w-full"
+    >
+      <div
+        className={`relative w-full bg-black overflow-hidden cursor-pointer group ${
+          isPortrait ? "aspect-[9/16]" : "aspect-video"
+        }`}
+        onClick={() => onPlay(video)}
+      >
+        <img
+          src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+          alt={video.title}
+          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src =
+              `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+          }}
+        />
+        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-14 h-14 rounded-full border border-white/60 flex items-center justify-center group-hover:border-white group-hover:scale-110 transition-all duration-300">
+            <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Title bar */}
+      <div className="border border-t-0 border-white/10 px-3 py-2 bg-black">
+        <p className="font-mono text-[9px] tracking-widest text-white/30 uppercase truncate">{video.title}</p>
       </div>
     </motion.div>
   );
 }
+
+// ── Placeholder ───────────────────────────────────────────────────────────────
 
 function PlaceholderCard() {
   return (
@@ -258,8 +319,11 @@ function PlaceholderCard() {
   );
 }
 
+// ── Page ──────────────────────────────────────────────────────────────────────
+
 export default function Videography() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeVideo, setActiveVideo] = useState<Video | null>(null);
 
   const filtered = activeCategory
     ? CATEGORIES.filter((c) => c.key === activeCategory)
@@ -334,7 +398,6 @@ export default function Videography() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: catIdx * 0.05 }}
           >
-            {/* Section header */}
             <div className="flex items-end justify-between mb-8 pb-4 border-b border-white/10">
               <div>
                 <p className="font-mono text-[10px] tracking-widest text-white/30 uppercase mb-2">
@@ -353,10 +416,9 @@ export default function Videography() {
               </span>
             </div>
 
-            {/* Video grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {cat.videos.map((v) => (
-                <VideoCard key={v.id} video={v} />
+                <VideoCard key={v.id} video={v} onPlay={setActiveVideo} />
               ))}
               {cat.videos.length === 0 &&
                 [0, 1, 2].map((i) => <PlaceholderCard key={i} />)}
@@ -366,6 +428,13 @@ export default function Videography() {
       </main>
 
       <Footer />
+
+      {/* Cinema player overlay */}
+      <AnimatePresence>
+        {activeVideo && (
+          <CinemaPlayer video={activeVideo} onClose={() => setActiveVideo(null)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
