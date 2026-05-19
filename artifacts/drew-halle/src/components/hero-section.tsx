@@ -42,17 +42,17 @@ export default function HeroSection() {
     setTimeout(() => {
       setPhase("video");
       setLucaFilmsVisible(true);
-    }, 1200);
+    }, 700);
 
     // "LUCA FILMS" text fades out after 3s of showing
-    setTimeout(() => setLucaFilmsVisible(false), 4200);
+    setTimeout(() => setLucaFilmsVisible(false), 3700);
 
     // Unlock scroll — video stays in page flow, just scrolls away naturally
     setTimeout(() => {
       setPhase("unlocked");
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
-    }, 4500);
+    }, 4000);
   }, []);
 
   useEffect(() => {
