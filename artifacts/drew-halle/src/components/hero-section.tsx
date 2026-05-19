@@ -256,17 +256,58 @@ export default function HeroSection() {
         </motion.div>
 
         {/* NAV LINKS — below the video, part of normal scroll flow */}
-        <div className="relative w-full border-t border-white/10 pt-16 pb-24 px-4 flex flex-col items-center bg-black">
+        <div className="relative w-full bg-black">
           <div
-            className="absolute inset-0 pointer-events-none opacity-20 mix-blend-screen"
+            className="absolute inset-0 pointer-events-none opacity-10 mix-blend-screen"
             style={{ backgroundImage: NOISE_SVG, backgroundSize: "200px 200px" }}
           />
-          <p className="font-mono text-[10px] tracking-widest text-white/40 uppercase mb-12">EST. LUCAFILMS · CHICAGO</p>
-          <div className="font-mono text-xs tracking-widest text-white/40 mb-8 uppercase">[ SELECT A CATEGORY ]</div>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 font-sans font-medium text-4xl md:text-6xl tracking-widest uppercase text-white mb-16">
-            <a href="#photography" data-testid="link-photography" className="hover:text-red-500 transition-colors font-bold">PHOTOGRAPHY</a>
-            <a href="#film" data-testid="link-film" className="hover:text-red-500 transition-colors font-bold">FILM</a>
-            <a href="#contact" data-testid="link-contact" className="hover:text-red-500 transition-colors font-bold">CONTACT</a>
+          <div className="w-full grid grid-cols-1 md:grid-cols-3 border-t border-white/10">
+            <a
+              href="/photography"
+              data-testid="link-photography"
+              className="group border-b md:border-b-0 md:border-r border-white/10 px-8 py-12 flex flex-col justify-between gap-8 hover:bg-white/[0.03] transition-colors"
+            >
+              <span className="font-mono text-[10px] tracking-widest text-white/30 uppercase">01 — PHOTOGRAPHY</span>
+              <span className="font-sans text-5xl md:text-6xl font-black tracking-tighter text-white uppercase leading-none group-hover:text-white/70 transition-colors">
+                PHOTO<br />GRAPHY
+              </span>
+              <span className="font-mono text-[10px] tracking-widest text-white/30 uppercase group-hover:text-white transition-colors">
+                VIEW GALLERY →
+              </span>
+            </a>
+
+            <a
+              href="#film"
+              data-testid="link-film"
+              className="group border-b md:border-b-0 md:border-r border-white/10 px-8 py-12 flex flex-col justify-between gap-8 hover:bg-white/[0.03] transition-colors"
+            >
+              <span className="font-mono text-[10px] tracking-widest text-white/30 uppercase">02 — SHORT FILMS</span>
+              <span className="font-sans text-5xl md:text-6xl font-black tracking-tighter text-white uppercase leading-none group-hover:text-white/70 transition-colors">
+                SHORT<br />FILMS
+              </span>
+              <span className="font-mono text-[10px] tracking-widest text-white/30 uppercase group-hover:text-white transition-colors">
+                COMING SOON →
+              </span>
+            </a>
+
+            <a
+              href="/contact"
+              data-testid="link-contact"
+              className="group px-8 py-12 flex flex-col justify-between gap-8 hover:bg-white/[0.03] transition-colors"
+            >
+              <span className="font-mono text-[10px] tracking-widest text-white/30 uppercase">03 — CONTACT</span>
+              <span className="font-sans text-5xl md:text-6xl font-black tracking-tighter text-white uppercase leading-none group-hover:text-white/70 transition-colors">
+                GET IN<br />TOUCH
+              </span>
+              <span className="font-mono text-[10px] tracking-widest text-white/30 uppercase group-hover:text-white transition-colors">
+                START A PROJECT →
+              </span>
+            </a>
+          </div>
+
+          <div className="border-t border-white/10 px-8 py-5 flex items-center justify-between font-mono text-[9px] tracking-widest text-white/20 uppercase">
+            <span>LUCA MARIANI · LUCA FILMS</span>
+            <span>CHICAGO · WORLDWIDE</span>
           </div>
         </div>
       </section>
