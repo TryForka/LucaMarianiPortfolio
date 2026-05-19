@@ -39,16 +39,20 @@ export default function HeroSection() {
 
     setPhase("fading");
 
-    // Show video + unlock scroll simultaneously at 0.8s
+    // Luca Mariani fades → video appears at 0.8s (still locked)
     setTimeout(() => {
       setPhase("video");
       setLucaFilmsVisible(true);
+    }, 800);
+
+    // Locked on reel for exactly 1s after video appears, then unlock
+    setTimeout(() => {
       setPhase("unlocked");
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
-    }, 800);
+    }, 1800);
 
-    // "LUCA FILMS" text fades out after 3s of showing
+    // "LUCA FILMS" text fades out
     setTimeout(() => setLucaFilmsVisible(false), 3700);
   }, []);
 
