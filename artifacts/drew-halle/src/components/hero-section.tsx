@@ -215,7 +215,7 @@ export default function HeroSection() {
           </AnimatePresence>
 
           {/* HUD corners */}
-          <div className="absolute top-4 left-4 font-mono text-[10px] tracking-widest text-white/40 uppercase z-20">REEL · MMXIX / MMXXVI</div>
+          <div className="absolute top-4 left-4 font-mono text-[10px] tracking-widest text-white/40 uppercase z-20">REEL · LUCAFILMS</div>
           <div className="absolute top-4 right-4 font-mono text-[10px] tracking-widest text-white/40 uppercase z-20 text-right">CINEMATOGRAPHY</div>
           <div className="absolute bottom-8 left-4 flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase text-white z-20">
             <div className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />

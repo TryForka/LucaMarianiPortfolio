@@ -110,7 +110,7 @@ export default function ReelSection() {
 
       {/* HUD corners */}
       <div className="absolute top-4 left-4 font-mono text-[10px] tracking-widest text-white/40 uppercase z-20">
-        REEL · MMXIX / MMXXVI
+        REEL · LUCAFILMS
       </div>
       <div className="absolute top-4 right-4 font-mono text-[10px] tracking-widest text-white/40 uppercase z-20 text-right">
         CINEMATOGRAPHY

@@ -34,7 +34,7 @@ export default function WorkSection() {
             </h2>
           </div>
           <div className="hidden md:flex flex-col items-end gap-1 font-mono text-[10px] tracking-widest text-muted-foreground">
-            <p>REEL — LUCA MARIANI · MMXIX / MMXXVI</p>
+            <p>REEL — LUCA MARIANI · LUCAFILMS</p>
             <p className="flex items-center gap-2 text-white">
               <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
               REC · N001
