@@ -1,6 +1,6 @@
 {
-  "buildCommand": "pnpm --filter @workspace/drew-halle run build && cp -r artifacts/drew-halle/dist/public dist",
-  "outputDirectory": "dist",
+  "buildCommand": "pnpm --filter @workspace/drew-halle run build && rm -rf .vercel-out && cp -r artifacts/drew-halle/dist/public .vercel-out",
+  "outputDirectory": ".vercel-out",
   "framework": null,
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
