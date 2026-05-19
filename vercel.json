@@ -1,6 +1,6 @@
 {
-  "buildCommand": "pnpm --filter @workspace/drew-halle run build",
-  "outputDirectory": "artifacts/drew-halle/dist/public",
+  "buildCommand": "pnpm --filter @workspace/drew-halle run build && cp -r artifacts/drew-halle/dist/public dist",
+  "outputDirectory": "dist",
   "framework": null,
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
