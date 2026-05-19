@@ -39,14 +39,14 @@ export default function HeroSection() {
 
     setPhase("fading");
 
-    // Show video + unlock scroll simultaneously at 0.7s
+    // Show video + unlock scroll simultaneously at 0.8s
     setTimeout(() => {
       setPhase("video");
       setLucaFilmsVisible(true);
       setPhase("unlocked");
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
-    }, 700);
+    }, 800);
 
     // "LUCA FILMS" text fades out after 3s of showing
     setTimeout(() => setLucaFilmsVisible(false), 3700);
