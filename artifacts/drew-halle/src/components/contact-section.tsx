@@ -1,104 +1,176 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 export default function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false });
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setCursor({ x: e.clientX - rect.left, y: e.clientY - rect.top, visible: true });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitted(true);
   };
 
+  const inputClass =
+    "w-full bg-transparent border-b border-white/15 text-white/80 py-3 focus:outline-none focus:border-white/60 transition-colors font-mono text-xs tracking-widest placeholder:text-white/20";
+  const labelClass = "font-mono text-[9px] tracking-widest text-white/40 uppercase mb-1 block";
+
   return (
-    <section className="w-full bg-black py-24 border-t border-white/10" id="contact">
-      <div className="max-w-[1600px] mx-auto px-4 md:px-8">
-        <div className="flex items-end gap-4 mb-16 uppercase">
-          <span className="font-mono text-2xl md:text-4xl text-white/50">07</span>
-          <h2 className="font-sans text-5xl md:text-7xl font-bold tracking-widest text-white leading-none">
-            GET IN TOUCH
-          </h2>
+    <section
+      ref={sectionRef}
+      className="w-full bg-black relative overflow-hidden"
+      id="contact"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setCursor((c) => ({ ...c, visible: false }))}
+    >
+      {/* Cursor follower — desktop only */}
+      <div
+        className="hidden md:block absolute z-50 pointer-events-none select-none"
+        style={{
+          transform: `translate(${cursor.x + 18}px, ${cursor.y - 10}px)`,
+          opacity: cursor.visible ? 1 : 0,
+          transition: "opacity 0.2s, transform 0.06s linear",
+        }}
+      >
+        <span className="font-mono text-[9px] tracking-widest uppercase text-white bg-black/70 border border-white/20 px-2 py-1 whitespace-nowrap">
+          Luca Mariani
+        </span>
+      </div>
+
+      {/* ── Clapperboard header ── */}
+      <div className="w-full">
+        {/* Diagonal hazard stripe */}
+        <div
+          className="w-full h-20 flex items-center justify-center"
+          style={{
+            background:
+              "repeating-linear-gradient(45deg, #ddd6c8 0px, #ddd6c8 18px, #111 18px, #111 36px)",
+          }}
+        >
+          <div className="bg-[#141414] border border-[#2a2a2a] px-8 py-3 flex items-center gap-3 shadow-lg">
+            <span className="w-2 h-2 rounded-full bg-red-600 shrink-0" />
+            <span className="font-mono text-[13px] md:text-sm tracking-[0.35em] text-white font-bold uppercase">
+              GET IN TOUCH
+            </span>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-32">
-          {/* Metadata / Clapperboard */}
-          <div className="flex flex-col justify-between">
-            <div className="font-mono text-xs tracking-widest uppercase border border-white/20 p-6 bg-[#0a0a0a]">
-              <div className="border-b border-white/10 pb-4 mb-4 flex justify-between">
-                <span className="text-white/50">PRODUCTION</span>
-                <span className="text-white">LUCA FILMS</span>
-              </div>
-              <div className="border-b border-white/10 pb-4 mb-4 flex justify-between">
-                <span className="text-white/50">SCENE</span>
-                <span className="text-white">07</span>
-              </div>
-              <div className="border-b border-white/10 pb-4 mb-4 flex justify-between">
-                <span className="text-white/50">TAKE</span>
-                <span className="text-white">01</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-white/50">ROLL</span>
-                <span className="text-white">A</span>
-              </div>
-            </div>
+        {/* Clapper teeth / hinge bar */}
+        <div className="w-full h-7 bg-[#222] flex items-center justify-center gap-10 border-b border-white/10">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="w-3.5 h-3.5 rounded-full bg-[#3a3a3a] border border-[#555]" />
+          ))}
+        </div>
+      </div>
 
-            <div className="mt-16 font-mono text-xs tracking-widest text-white/60 space-y-4">
-              <p className="uppercase text-white">■ LUCA MARIANI</p>
-              <a href="mailto:lucafilmsbusiness@gmail.com" className="block hover:text-white transition-colors">
-                lucafilmsbusiness@gmail.com
-              </a>
-              <a href="tel:2245349841" className="block hover:text-white transition-colors">
-                224-534-9841
-              </a>
-              <div className="flex gap-6 pt-4 border-t border-white/10">
-                <a href="https://instagram.com/lucafilms__" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors uppercase">IG</a>
-                <a href="https://www.tiktok.com/@luca.mariani.3" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors uppercase">TT</a>
-                <a href="https://linkedin.com/in/luca-mariani-4858852ba" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors uppercase">LI</a>
-              </div>
+      {/* ── Clapperboard body ── */}
+      <div className="max-w-[860px] w-full mx-auto px-4 md:px-0 pb-16">
+        <div className="border border-white/10 bg-[#0d0d0d]">
+
+          {/* Metadata row */}
+          <div className="flex items-stretch border-b border-red-900/40">
+            {/* Production */}
+            <div className="border-r border-white/10 pl-5 pr-8 py-4 flex flex-col justify-center" style={{ borderLeft: "3px solid #dc2626" }}>
+              <p className="font-mono text-[8px] tracking-widest text-white/40 uppercase mb-1">PRODUCTION</p>
+              <p className="font-mono text-xs md:text-sm tracking-widest text-white font-bold uppercase">LUCA MARIANI</p>
+            </div>
+            <div className="border-r border-white/10 px-6 py-4 flex flex-col justify-center">
+              <p className="font-mono text-[8px] tracking-widest text-white/40 uppercase mb-1">SCENE</p>
+              <p className="font-mono text-xl font-bold text-white">08</p>
+            </div>
+            <div className="border-r border-white/10 px-6 py-4 flex flex-col justify-center">
+              <p className="font-mono text-[8px] tracking-widest text-white/40 uppercase mb-1">TAKE</p>
+              <p className="font-mono text-xl font-bold text-white">01</p>
+            </div>
+            <div className="px-6 py-4 flex flex-col justify-center">
+              <p className="font-mono text-[8px] tracking-widest text-white/40 uppercase mb-1">ROLL</p>
+              <p className="font-mono text-xl font-bold text-white">A</p>
             </div>
           </div>
 
           {/* Form */}
-          <div className="w-full">
+          <div className="p-6 md:p-8">
             {isSubmitted ? (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="w-full h-full min-h-[400px] flex flex-col justify-center font-sans text-4xl md:text-5xl tracking-widest text-white uppercase leading-tight"
+                className="min-h-[260px] flex flex-col justify-center font-mono text-sm tracking-widest text-white uppercase"
               >
-                <span className="text-white/50 font-mono text-xs mb-8">ACTION —</span>
-                Message received —<br />
-                let's create something.
+                <span className="text-white/40 text-[9px] mb-6 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-600" /> ACTION —
+                </span>
+                Message received —<br />let's create something.
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-6 font-mono text-xs tracking-widest uppercase">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-white/50">NAME</label>
-                    <input required type="text" className="bg-transparent border border-white/20 text-white p-4 focus:outline-none focus:border-white transition-colors" data-testid="input-name" />
+                  <div>
+                    <label className={labelClass}>Name</label>
+                    <input
+                      required
+                      type="text"
+                      placeholder="Your name"
+                      className={inputClass}
+                      data-testid="input-name"
+                    />
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-white/50">EMAIL</label>
-                    <input required type="email" className="bg-transparent border border-white/20 text-white p-4 focus:outline-none focus:border-white transition-colors" data-testid="input-email" />
+                  <div>
+                    <label className={labelClass}>Email</label>
+                    <input
+                      required
+                      type="email"
+                      placeholder="your@email.com"
+                      className={inputClass}
+                      data-testid="input-email"
+                    />
                   </div>
-                </div>
-                
-                <div className="flex flex-col gap-2">
-                  <label className="text-white/50">SUBJECT</label>
-                  <input required type="text" className="bg-transparent border border-white/20 text-white p-4 focus:outline-none focus:border-white transition-colors" data-testid="input-subject" />
-                </div>
-                
-                <div className="flex flex-col gap-2">
-                  <label className="text-white/50">MESSAGE</label>
-                  <textarea required rows={6} className="bg-transparent border border-white/20 text-white p-4 focus:outline-none focus:border-white transition-colors resize-none" data-testid="input-message" />
                 </div>
 
-                <button 
-                  type="submit"
-                  data-testid="button-submit"
-                  className="mt-4 bg-white text-black py-4 px-8 font-bold hover:bg-white/90 transition-colors w-full md:w-auto self-start"
-                >
-                  SEND MESSAGE
-                </button>
+                <div>
+                  <label className={labelClass}>Subject</label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="What's the shoot?"
+                    className={inputClass}
+                    data-testid="input-subject"
+                  />
+                </div>
+
+                <div>
+                  <label className={labelClass}>Message</label>
+                  <textarea
+                    required
+                    rows={5}
+                    placeholder="Tell me about your project..."
+                    className={`${inputClass} resize-none`}
+                    data-testid="input-message"
+                  />
+                </div>
+
+                <div className="border-t border-white/10 pt-5 mt-1 flex items-center justify-between">
+                  <button
+                    type="submit"
+                    data-testid="button-submit"
+                    className="flex items-center gap-2 border border-white/30 px-5 py-2 font-mono text-[10px] tracking-widest uppercase text-white/70 hover:text-white hover:border-white transition-colors"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
+                    ACTION —
+                  </button>
+
+                  <div className="flex gap-5 font-mono text-[9px] tracking-widest text-white/30 uppercase">
+                    <a href="https://instagram.com/lucafilms__" target="_blank" rel="noopener noreferrer" aria-label="Instagram @lucafilms__" className="hover:text-white transition-colors">IG</a>
+                    <a href="https://www.tiktok.com/@luca.mariani.3" target="_blank" rel="noopener noreferrer" aria-label="TikTok @luca.mariani.3" className="hover:text-white transition-colors">TT</a>
+                    <a href="https://linkedin.com/in/luca-mariani-4858852ba" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" className="hover:text-white transition-colors">LI</a>
+                    <a href="mailto:lucafilmsbusiness@gmail.com" aria-label="Email Luca Mariani" className="hover:text-white transition-colors">MAIL</a>
+                  </div>
+                </div>
               </form>
             )}
           </div>

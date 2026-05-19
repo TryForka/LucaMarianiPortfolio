@@ -343,10 +343,10 @@ export default function Videography() {
               </span>
             </Link>
             <h1
-              className="font-sans font-black uppercase tracking-tighter leading-[0.85] text-white"
-              style={{ fontSize: "clamp(72px, 12vw, 180px)" }}
+              className="font-sans font-black uppercase tracking-tighter leading-none text-white whitespace-nowrap"
+              style={{ fontSize: "clamp(3rem, 14vw, 240px)" }}
             >
-              VIDEO<br />GRAPHY
+              VIDEOGRAPHY
             </h1>
           </div>
           <div className="hidden md:flex flex-col items-end gap-1 font-mono text-[10px] tracking-widest text-white/30 uppercase mt-auto pb-2">

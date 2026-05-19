@@ -39,20 +39,17 @@ export default function HeroSection() {
 
     setPhase("fading");
 
+    // Show video + unlock scroll simultaneously at 0.7s
     setTimeout(() => {
       setPhase("video");
       setLucaFilmsVisible(true);
+      setPhase("unlocked");
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     }, 700);
 
     // "LUCA FILMS" text fades out after 3s of showing
     setTimeout(() => setLucaFilmsVisible(false), 3700);
-
-    // Unlock scroll — video stays in page flow, just scrolls away naturally
-    setTimeout(() => {
-      setPhase("unlocked");
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
-    }, 4000);
   }, []);
 
   useEffect(() => {
