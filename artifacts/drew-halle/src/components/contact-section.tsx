@@ -1,16 +1,8 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 export default function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false });
-  const sectionRef = useRef<HTMLElement>(null);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = sectionRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    setCursor({ x: e.clientX - rect.left, y: e.clientY - rect.top, visible: true });
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,30 +14,9 @@ export default function ContactSection() {
   const labelClass = "font-mono text-[9px] tracking-widest text-white/40 uppercase mb-1 block";
 
   return (
-    <section
-      ref={sectionRef}
-      className="w-full bg-black relative overflow-hidden"
-      id="contact"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => setCursor((c) => ({ ...c, visible: false }))}
-    >
-      {/* Cursor follower — desktop only */}
-      <div
-        className="hidden md:block absolute z-50 pointer-events-none select-none"
-        style={{
-          transform: `translate(${cursor.x + 18}px, ${cursor.y - 10}px)`,
-          opacity: cursor.visible ? 1 : 0,
-          transition: "opacity 0.2s, transform 0.06s linear",
-        }}
-      >
-        <span className="font-mono text-[9px] tracking-widest uppercase text-white bg-black/70 border border-white/20 px-2 py-1 whitespace-nowrap">
-          Luca Mariani
-        </span>
-      </div>
-
+    <section className="w-full bg-black" id="contact">
       {/* ── Clapperboard header ── */}
       <div className="w-full">
-        {/* Diagonal hazard stripe */}
         <div
           className="w-full h-20 flex items-center justify-center"
           style={{
@@ -60,8 +31,6 @@ export default function ContactSection() {
             </span>
           </div>
         </div>
-
-        {/* Clapper teeth / hinge bar */}
         <div className="w-full h-7 bg-[#222] flex items-center justify-center gap-10 border-b border-white/10">
           {[0, 1, 2].map((i) => (
             <div key={i} className="w-3.5 h-3.5 rounded-full bg-[#3a3a3a] border border-[#555]" />
@@ -72,10 +41,8 @@ export default function ContactSection() {
       {/* ── Clapperboard body ── */}
       <div className="max-w-[860px] w-full mx-auto px-4 md:px-0 pb-16">
         <div className="border border-white/10 bg-[#0d0d0d]">
-
           {/* Metadata row */}
           <div className="flex items-stretch border-b border-red-900/40">
-            {/* Production */}
             <div className="border-r border-white/10 pl-5 pr-8 py-4 flex flex-col justify-center" style={{ borderLeft: "3px solid #dc2626" }}>
               <p className="font-mono text-[8px] tracking-widest text-white/40 uppercase mb-1">PRODUCTION</p>
               <p className="font-mono text-xs md:text-sm tracking-widest text-white font-bold uppercase">LUCA MARIANI</p>
@@ -112,49 +79,22 @@ export default function ContactSection() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className={labelClass}>Name</label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="Your name"
-                      className={inputClass}
-                      data-testid="input-name"
-                    />
+                    <input required type="text" placeholder="Your name" className={inputClass} data-testid="input-name" />
                   </div>
                   <div>
                     <label className={labelClass}>Email</label>
-                    <input
-                      required
-                      type="email"
-                      placeholder="your@email.com"
-                      className={inputClass}
-                      data-testid="input-email"
-                    />
+                    <input required type="email" placeholder="your@email.com" className={inputClass} data-testid="input-email" />
                   </div>
                 </div>
-
                 <div>
                   <label className={labelClass}>Subject</label>
-                  <input
-                    required
-                    type="text"
-                    placeholder="What's the shoot?"
-                    className={inputClass}
-                    data-testid="input-subject"
-                  />
+                  <input required type="text" placeholder="What's the shoot?" className={inputClass} data-testid="input-subject" />
                 </div>
-
                 <div>
                   <label className={labelClass}>Message</label>
-                  <textarea
-                    required
-                    rows={5}
-                    placeholder="Tell me about your project..."
-                    className={`${inputClass} resize-none`}
-                    data-testid="input-message"
-                  />
+                  <textarea required rows={5} placeholder="Tell me about your project..." className={`${inputClass} resize-none`} data-testid="input-message" />
                 </div>
-
-                <div className="border-t border-white/10 pt-5 mt-1 flex items-center justify-between">
+                <div className="border-t border-white/10 pt-5 mt-1">
                   <button
                     type="submit"
                     data-testid="button-submit"
@@ -163,16 +103,27 @@ export default function ContactSection() {
                     <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
                     ACTION —
                   </button>
-
-                  <div className="flex gap-5 font-mono text-[9px] tracking-widest text-white/30 uppercase">
-                    <a href="https://instagram.com/lucafilms__" target="_blank" rel="noopener noreferrer" aria-label="Instagram @lucafilms__" className="hover:text-white transition-colors">IG</a>
-                    <a href="https://www.tiktok.com/@luca.mariani.3" target="_blank" rel="noopener noreferrer" aria-label="TikTok @luca.mariani.3" className="hover:text-white transition-colors">TT</a>
-                    <a href="https://linkedin.com/in/luca-mariani-4858852ba" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" className="hover:text-white transition-colors">LI</a>
-                    <a href="mailto:lucafilmsbusiness@gmail.com" aria-label="Email Luca Mariani" className="hover:text-white transition-colors">MAIL</a>
-                  </div>
                 </div>
               </form>
             )}
+          </div>
+        </div>
+
+        {/* Contact info + socials */}
+        <div className="border border-t-0 border-white/10 px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0a0a0a]">
+          <div className="flex flex-col gap-1 font-mono text-[10px] tracking-widest text-white/50 uppercase">
+            <span className="text-white font-bold">■ LUCA MARIANI</span>
+            <a href="mailto:lucafilmsbusiness@gmail.com" aria-label="Email Luca Mariani" className="hover:text-white transition-colors">
+              lucafilmsbusiness@gmail.com
+            </a>
+            <a href="tel:2245349841" aria-label="Call Luca Mariani" className="hover:text-white transition-colors">
+              224-534-9841
+            </a>
+          </div>
+          <div className="flex gap-6 font-mono text-[10px] tracking-widest uppercase text-white/40">
+            <a href="https://instagram.com/lucafilms__" target="_blank" rel="noopener noreferrer" aria-label="Instagram @lucafilms__" className="hover:text-white transition-colors">INSTAGRAM</a>
+            <a href="https://www.tiktok.com/@lucafilms_" target="_blank" rel="noopener noreferrer" aria-label="TikTok @lucafilms_" className="hover:text-white transition-colors">TIKTOK</a>
+            <a href="https://linkedin.com/in/luca-mariani-4858852ba" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" className="hover:text-white transition-colors">LINKEDIN</a>
           </div>
         </div>
       </div>

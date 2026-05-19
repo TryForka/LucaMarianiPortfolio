@@ -118,7 +118,7 @@ export default function AboutSection() {
         </div>
 
         <div className="flex items-center justify-between border-t border-white/10 pt-8 mt-16 font-mono text-[10px] tracking-widest uppercase text-white/50">
-          <p>[ 03 / 07 ]</p>
+          <p>[ 03 / 05 ]</p>
           <p className="flex items-center gap-2 text-white">↓ FILM</p>
         </div>
       </div>

@@ -93,7 +93,7 @@ export default function PressSection() {
             CONCERTS · SPORTS · BRAND WORK · WEDDINGS · PHOTOGRAPHY · CUSTOM PROJECTS
           </p>
           <div className="flex items-center gap-8">
-            <span>[ 05 / 07 ]</span>
+            <span>[ 05 / 05 ]</span>
           </div>
         </div>
       </div>
