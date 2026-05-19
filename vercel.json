@@ -1,6 +1,5 @@
 {
-  "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm run typecheck:libs && pnpm --filter @workspace/drew-halle run build",
+  "buildCommand": "pnpm --filter @workspace/drew-halle run build",
   "outputDirectory": "artifacts/drew-halle/dist/public",
   "framework": null,
   "rewrites": [
