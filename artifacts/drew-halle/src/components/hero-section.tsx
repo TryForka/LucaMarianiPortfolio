@@ -263,11 +263,9 @@ export default function HeroSection() {
           />
           <p className="font-mono text-[10px] tracking-widest text-white/40 uppercase mb-12">EST. LUCAFILMS · CHICAGO</p>
           <div className="font-mono text-xs tracking-widest text-white/40 mb-8 uppercase">[ SELECT A CATEGORY ]</div>
-          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 font-sans font-medium text-4xl md:text-6xl tracking-widest uppercase text-white mb-16">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 font-sans font-medium text-4xl md:text-6xl tracking-widest uppercase text-white mb-16">
             <a href="#photography" data-testid="link-photography" className="hover:text-red-500 transition-colors font-bold">PHOTOGRAPHY</a>
-            <span className="text-white/20 hidden md:inline">·</span>
             <a href="#film" data-testid="link-film" className="hover:text-red-500 transition-colors font-bold">FILM</a>
-            <span className="text-white/20 hidden md:inline">·</span>
             <a href="#contact" data-testid="link-contact" className="hover:text-red-500 transition-colors font-bold">CONTACT</a>
           </div>
         </div>
