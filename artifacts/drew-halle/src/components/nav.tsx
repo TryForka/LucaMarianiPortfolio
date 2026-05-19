@@ -17,7 +17,7 @@ export default function Nav() {
           <span className="hover:text-white transition-colors cursor-pointer">PHOTOGRAPHY</span>
         </Link>
         <span className="text-white/20" aria-hidden="true">·</span>
-        <Link href="/#contact" aria-label="Contact Luca Mariani">
+        <Link href="/contact" aria-label="Contact Luca Mariani">
           <span className="hover:text-white transition-colors cursor-pointer">CONTACT</span>
         </Link>
       </div>
