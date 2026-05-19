@@ -68,7 +68,7 @@ const CATEGORIES: PhotoCategory[] = [
   },
   {
     key: "event",
-    label: "EVENT",
+    label: "EVENTS",
     sub: "Venues · Brand showcases · Celebrations",
     photos: [
       { id: "ev1", src: "https://res.cloudinary.com/dgqwzy1a0/image/upload/v1779165080/DSC00952_nugqp9.jpg", alt: "Event photography Chicago" },
