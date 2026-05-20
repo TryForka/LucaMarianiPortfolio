@@ -3,10 +3,35 @@ import { motion } from "framer-motion";
 
 export default function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    setLoading(true);
+    setError("");
+
+    const form = e.currentTarget;
+    const data = {
+      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
+      subject: (form.elements.namedItem("subject") as HTMLInputElement).value,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("Failed");
+      setIsSubmitted(true);
+    } catch {
+      setError("Something went wrong. Email directly: lucafilmsbusiness@gmail.com");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputClass =
@@ -79,29 +104,33 @@ export default function ContactSection() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className={labelClass}>Name</label>
-                    <input required type="text" placeholder="Your name" className={inputClass} data-testid="input-name" />
+                    <input required name="name" type="text" placeholder="Your name" className={inputClass} data-testid="input-name" />
                   </div>
                   <div>
                     <label className={labelClass}>Email</label>
-                    <input required type="email" placeholder="your@email.com" className={inputClass} data-testid="input-email" />
+                    <input required name="email" type="email" placeholder="your@email.com" className={inputClass} data-testid="input-email" />
                   </div>
                 </div>
                 <div>
                   <label className={labelClass}>Subject</label>
-                  <input required type="text" placeholder="What's the shoot?" className={inputClass} data-testid="input-subject" />
+                  <input required name="subject" type="text" placeholder="What's the shoot?" className={inputClass} data-testid="input-subject" />
                 </div>
                 <div>
                   <label className={labelClass}>Message</label>
-                  <textarea required rows={5} placeholder="Tell me about your project..." className={`${inputClass} resize-none`} data-testid="input-message" />
+                  <textarea required name="message" rows={5} placeholder="Tell me about your project..." className={`${inputClass} resize-none`} data-testid="input-message" />
                 </div>
+                {error && (
+                  <p className="font-mono text-[10px] tracking-widest text-red-400 uppercase">{error}</p>
+                )}
                 <div className="border-t border-white/10 pt-5 mt-1">
                   <button
                     type="submit"
+                    disabled={loading}
                     data-testid="button-submit"
-                    className="flex items-center gap-2 border border-white/30 px-5 py-2 font-mono text-[10px] tracking-widest uppercase text-white/70 hover:text-white hover:border-white transition-colors"
+                    className="flex items-center gap-2 border border-white/30 px-5 py-2 font-mono text-[10px] tracking-widest uppercase text-white/70 hover:text-white hover:border-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
-                    ACTION —
+                    {loading ? "SENDING..." : "ACTION —"}
                   </button>
                 </div>
               </form>
