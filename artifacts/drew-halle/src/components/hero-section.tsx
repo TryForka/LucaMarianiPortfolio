@@ -8,7 +8,9 @@ type Phase = "gate" | "fading" | "video" | "unlocked";
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
-    setIsMobile(window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768);
+    setIsMobile(
+      window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768
+    );
   }, []);
   return isMobile;
 }
@@ -17,20 +19,29 @@ export default function HeroSection() {
   const [phase, setPhase] = useState<Phase>("gate");
   const [lucaFilmsVisible, setLucaFilmsVisible] = useState(false);
   const [muted, setMuted] = useState(true);
+  const [mobilePlaying, setMobilePlaying] = useState(false);
   const triggered = useRef(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const mobileIframeRef = useRef<HTMLIFrameElement>(null);
   const isMobile = useIsMobile();
 
-  const toggleMute = useCallback(() => {
-    const iframe = iframeRef.current;
-    if (!iframe?.contentWindow) return;
-    const next = !muted;
-    iframe.contentWindow.postMessage(
-      JSON.stringify({ event: "command", func: next ? "mute" : "unMute", args: "" }),
+  const sendYT = (ref: React.RefObject<HTMLIFrameElement | null>, func: string) => {
+    ref.current?.contentWindow?.postMessage(
+      JSON.stringify({ event: "command", func, args: "" }),
       "*"
     );
+  };
+
+  const toggleMute = useCallback(() => {
+    const next = !muted;
+    sendYT(iframeRef, next ? "mute" : "unMute");
     setMuted(next);
   }, [muted]);
+
+  const handleMobilePlay = useCallback(() => {
+    setMobilePlaying(true);
+    sendYT(mobileIframeRef, "playVideo");
+  }, []);
 
   // Lock scroll while gate is active
   useEffect(() => {
@@ -45,20 +56,16 @@ export default function HeroSection() {
   const triggerGate = useCallback(() => {
     if (triggered.current) return;
     triggered.current = true;
-
     setPhase("fading");
-
     setTimeout(() => {
       setPhase("video");
       setLucaFilmsVisible(true);
     }, 800);
-
     setTimeout(() => {
       setPhase("unlocked");
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
     }, 1800);
-
     setTimeout(() => setLucaFilmsVisible(false), 3700);
   }, []);
 
@@ -97,10 +104,7 @@ export default function HeroSection() {
           90%  { transform: translate(-6px, -4px); }
           100% { transform: translate(0px, 0px); }
         }
-        .grain-move {
-          animation: grainMove 0.08s steps(1) infinite;
-          will-change: transform;
-        }
+        .grain-move { animation: grainMove 0.08s steps(1) infinite; will-change: transform; }
       `}</style>
 
       {/* ── GATE OVERLAY ── */}
@@ -176,13 +180,13 @@ export default function HeroSection() {
           animate={{ opacity: showVideo ? 1 : 0 }}
           transition={{ duration: 1.2, ease: "easeInOut" }}
         >
-          {/* DESKTOP: YouTube iframe */}
+          {/* ── DESKTOP: autoplay iframe ── */}
           {!isMobile && (
             <div className="absolute inset-0 overflow-hidden" style={{ clipPath: "inset(48px 0px)" }}>
               <iframe
+                ref={iframeRef}
                 width="560"
                 height="315"
-                ref={iframeRef}
                 src="https://www.youtube.com/embed/EWRG-pAbhFY?si=cKkJ0s-bkFqt9zCJ&controls=0&autoplay=1&mute=1&enablejsapi=1&playsinline=1&loop=1&playlist=EWRG-pAbhFY"
                 title="YouTube video player"
                 frameBorder="0"
@@ -195,29 +199,65 @@ export default function HeroSection() {
             </div>
           )}
 
-          {/* MOBILE: cinematic dark hero — no iframe */}
+          {/* ── MOBILE: tap-to-play ── */}
           {isMobile && (
-            <div className="absolute inset-0 bg-black flex flex-col items-center justify-center">
-              <div
-                className="grain-move absolute inset-0 pointer-events-none opacity-20 mix-blend-screen"
-                style={{ backgroundImage: NOISE_SVG, backgroundSize: "200px 200px" }}
+            <div className="absolute inset-0 overflow-hidden">
+              {/* iframe loads silently; playVideo is triggered on tap */}
+              <iframe
+                ref={mobileIframeRef}
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/EWRG-pAbhFY?controls=0&autoplay=0&mute=0&enablejsapi=1&playsinline=1&loop=1&playlist=EWRG-pAbhFY"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+                style={{ border: "none", opacity: mobilePlaying ? 1 : 0, pointerEvents: mobilePlaying ? "auto" : "none" }}
               />
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: showVideo ? 1 : 0 }}
-                transition={{ duration: 1.5 }}
-                className="relative z-10 flex flex-col items-center justify-center text-center px-6"
-              >
-                <p className="font-mono text-[10px] tracking-widest text-white/40 uppercase mb-8">
-                  LUCA MARIANI — CINEMATOGRAPHY REEL
-                </p>
-                <p
-                  className="font-sans font-black text-white/10 uppercase tracking-widest text-center"
-                  style={{ fontSize: "clamp(56px, 20vw, 120px)", lineHeight: 0.85 }}
-                >
-                  LUCA<br />FILMS
-                </p>
-              </motion.div>
+
+              {/* Tap-to-play overlay — hidden once playing */}
+              <AnimatePresence>
+                {!mobilePlaying && (
+                  <motion.div
+                    key="tap-overlay"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0 bg-black flex flex-col items-center justify-center"
+                  >
+                    <div
+                      className="grain-move absolute inset-0 pointer-events-none opacity-20 mix-blend-screen"
+                      style={{ backgroundImage: NOISE_SVG, backgroundSize: "200px 200px" }}
+                    />
+                    <p className="font-mono text-[10px] tracking-widest text-white/40 uppercase mb-10 z-10">
+                      LUCA MARIANI — CINEMATOGRAPHY REEL
+                    </p>
+                    <button
+                      onClick={handleMobilePlay}
+                      className="relative z-10 flex flex-col items-center gap-4 group"
+                      aria-label="Play reel"
+                    >
+                      <div className="w-16 h-16 rounded-full border border-white/40 flex items-center justify-center group-active:scale-95 transition-transform">
+                        <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                      <span className="font-mono text-[10px] tracking-widest uppercase text-white/60">
+                        TAP TO PLAY REEL
+                      </span>
+                    </button>
+                    <p
+                      className="absolute bottom-32 font-sans font-black text-white/8 uppercase tracking-widest text-center z-0"
+                      style={{ fontSize: "clamp(56px, 20vw, 120px)", lineHeight: 0.85 }}
+                    >
+                      LUCA<br />FILMS
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           )}
 
@@ -258,7 +298,7 @@ export default function HeroSection() {
             REC · 24.976 FPS
           </div>
 
-          {/* Mute button — desktop only */}
+          {/* Mute toggle — desktop only */}
           {!isMobile && (
             <AnimatePresence>
               {showVideo && (
