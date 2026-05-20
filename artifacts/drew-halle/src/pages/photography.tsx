@@ -60,6 +60,18 @@ const CATEGORIES: PhotoCategory[] = [
     ],
   },
   {
+    key: "snow",
+    label: "SNOW",
+    sub: "Alpine · Winter landscapes · Nature",
+    photos: [
+      { id: "sn1", src: "https://res.cloudinary.com/dgqwzy1a0/image/upload/v1779239394/Alpine12_19-11_wfa9cx.jpg", alt: "Alpine snow photography" },
+      { id: "sn2", src: "https://res.cloudinary.com/dgqwzy1a0/image/upload/v1779239392/Alpine12_19-08_r9s9hk.jpg", alt: "Winter alpine landscape" },
+      { id: "sn3", src: "https://res.cloudinary.com/dgqwzy1a0/image/upload/v1779239389/Alpine12_19-10_ymeprj.jpg", alt: "Snow scene photography" },
+      { id: "sn4", src: "https://res.cloudinary.com/dgqwzy1a0/image/upload/v1779239388/Alpine12_19-03_xsp8jf.jpg", alt: "Alpine winter photography" },
+      { id: "sn5", src: "https://res.cloudinary.com/dgqwzy1a0/image/upload/v1779239387/Alpine12_19-06_brpy2b.jpg", alt: "Snow landscape" },
+    ],
+  },
+  {
     key: "sports",
     label: "SPORTS",
     sub: "Athletic campaigns · Event coverage · Action",
