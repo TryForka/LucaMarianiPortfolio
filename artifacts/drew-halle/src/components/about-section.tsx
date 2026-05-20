@@ -95,7 +95,7 @@ export default function AboutSection() {
                 <img
                   src="/emmy.jpg"
                   alt="Luca Mariani at the Chicago/Midwest Emmy Awards"
-                  className="w-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                  className="w-full object-cover md:grayscale md:hover:grayscale-0 transition-all duration-700"
                 />
               </div>
 

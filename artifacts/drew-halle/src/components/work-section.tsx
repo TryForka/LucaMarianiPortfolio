@@ -61,7 +61,7 @@ export default function WorkSection() {
                   <img
                     src={card.image}
                     alt={card.category}
-                    className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
+                    className="w-full h-full object-cover opacity-100 md:grayscale md:opacity-80 md:group-hover:grayscale-0 md:group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
                   />
                   <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
                   <div className="absolute bottom-0 left-0 z-10 px-4 pb-4 uppercase">

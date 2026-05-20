@@ -176,7 +176,7 @@ export default function HeroSection() {
               width="560"
               height="315"
               ref={iframeRef}
-              src="https://www.youtube.com/embed/EWRG-pAbhFY?si=cKkJ0s-bkFqt9zCJ&controls=0&autoplay=1&mute=1&enablejsapi=1"
+              src="https://www.youtube.com/embed/EWRG-pAbhFY?si=cKkJ0s-bkFqt9zCJ&controls=0&autoplay=1&mute=1&enablejsapi=1&playsinline=1&loop=1&playlist=EWRG-pAbhFY"
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
