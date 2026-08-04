@@ -7,6 +7,7 @@ import Home from "@/pages/home";
 import Videography from "@/pages/videography";
 import Photography from "@/pages/photography";
 import Contact from "@/pages/contact";
+import Portal from "@/pages/portal";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ function Router() {
       <Route path="/videography" component={Videography} />
       <Route path="/photography" component={Photography} />
       <Route path="/contact" component={Contact} />
+      <Route path="/portal" component={Portal} />
       <Route component={NotFound} />
     </Switch>
   );

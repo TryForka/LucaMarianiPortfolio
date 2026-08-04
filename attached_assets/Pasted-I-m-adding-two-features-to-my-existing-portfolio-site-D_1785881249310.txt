@@ -1,0 +1,83 @@
+I'm adding two features to my existing portfolio site. Do NOT change, restyle, or 
+refactor anything else on the site — the homepage layout, existing sections, 
+/videography and /photography pages, styling, and routing should all stay exactly as 
+they are. Only add what's described below, matching the existing visual language 
+(dark background, bold condensed sans headers, monospace-style small caps labels, 
+minimal borders).
+
+=== FEATURE 1: RECENT WORK CAROUSEL ===
+
+PLACEMENT
+On the homepage only, insert a new section in the gap between the cinematography reel 
+section and the "Select Work" section. Nothing above or below it moves or changes 
+other than being pushed down.
+
+DATA MODEL
+Create a table/collection called `recent_work` with these fields:
+- id (primary key, auto-generated)
+- type (enum/string: "photo" or "video")
+- embed_url (string) — YouTube embed link for videos, image embed link for photos
+- title (string)
+- category (enum/string: "Music", "Sports", "Hospitality & Events")
+- date_added (timestamp, defaults to now)
+- active (boolean, defaults true) — controls whether the item appears in the carousel
+
+CAROUSEL BEHAVIOR
+- Queries `recent_work` WHERE active = true, ORDER BY date_added DESC, LIMIT 10
+- Horizontally scrollable carousel with left/right arrow navigation
+- Renders video items as YouTube embeds/thumbnails and photo items as images, 
+  based on the `type` field
+- Each card shows the title and category as a small label beneath it
+- Responsive: multiple cards visible on desktop, single-card swipe on mobile
+- If there are zero active items, hide the entire section rather than showing an 
+  empty state
+- Section header should read "RECENT WORK" in the same header style used elsewhere 
+  on the site
+
+=== FEATURE 2: PRIVATE UPLOAD PORTAL ===
+
+ROUTE
+/portal — a new page, not linked from anywhere in the site navigation, footer, or 
+sitemap. Exclude it from robots.txt indexing.
+
+AUTHENTICATION (important — implement correctly)
+- Server-side password protection with a session cookie. Single user, single password 
+  stored as an environment variable (not hardcoded in the source).
+- Unauthenticated requests to /portal must be blocked on the SERVER and redirected to 
+  a login screen. Do NOT implement this as a client-side check that hides the form — 
+  the portal content and any upload API endpoints must not be reachable without a 
+  valid session.
+- The API route that writes to `recent_work` must independently verify the session on 
+  every request, not just the page render.
+- Login screen: single password field, submit button, error message on failure. Match 
+  site styling.
+- Include a logout button on the portal page.
+
+UPLOAD FORM
+Once authenticated, /portal shows a form with:
+- Type: toggle or radio — Photo / Video
+- Embed URL: text input (required)
+- Title: text input (required)
+- Category: dropdown — Music / Sports / Hospitality & Events (required)
+- "Show in homepage carousel": checkbox, checked by default → sets `active`
+- Submit button
+
+On submit: validate all required fields, insert a new row into `recent_work`, show a 
+success confirmation, and clear the form for the next entry. Show a clear error 
+message on failure.
+
+MANAGE EXISTING ENTRIES
+Below the upload form, show a list of all existing `recent_work` entries, newest 
+first, each displaying: thumbnail/preview, title, type, category, date added, and 
+active status. For each entry provide:
+- A toggle to flip `active` on/off without deleting
+- An edit action to update title, category, embed_url, and type
+- A delete action with a confirmation step before it removes the row
+
+=== NOTES ===
+- Use whatever database/storage layer the site already uses. If none exists yet, set 
+  one up using the simplest option available in this project.
+- Keep the categories exactly as written ("Music", "Sports", "Hospitality & Events") 
+  so they match the existing filters on /videography and /photography.
+- After building, tell me what environment variable I need to set for the portal 
+  password and where to set it.

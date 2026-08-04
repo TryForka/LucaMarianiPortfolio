@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: recent-work
+    description: Recent work carousel (public)
 paths:
   /healthz:
     get:
@@ -24,6 +26,21 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /recent-work:
+    get:
+      operationId: getRecentWork
+      tags: [recent-work]
+      summary: Get active recent work items for carousel
+      description: Returns active recent work items ordered by date_added DESC, limit 10
+      responses:
+        "200":
+          description: List of recent work items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecentWorkItem"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +50,31 @@ components:
           type: string
       required:
         - status
-
+    RecentWorkItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [photo, video]
+        embedUrl:
+          type: string
+        title:
+          type: string
+        category:
+          type: string
+          enum: ["Music", "Sports", "Hospitality & Events"]
+        dateAdded:
+          type: string
+          format: date-time
+        active:
+          type: boolean
+      required:
+        - id
+        - type
+        - embedUrl
+        - title
+        - category
+        - dateAdded
+        - active
