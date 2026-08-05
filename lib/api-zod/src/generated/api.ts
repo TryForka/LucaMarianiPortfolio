@@ -26,7 +26,7 @@ export const GetRecentWorkResponseItem = zod.object({
   "type": zod.enum(['photo', 'video']),
   "embedUrl": zod.string(),
   "title": zod.string(),
-  "category": zod.enum(['Music', 'Sports', 'Hospitality & Events']),
+  "category": zod.enum(['Music', 'Sports', 'Hospitality & Events', 'Snow']),
   "dateAdded": zod.coerce.date(),
   "active": zod.boolean()
 })

@@ -8,7 +8,7 @@ type RecentWorkItem = {
   type: "photo" | "video";
   embedUrl: string;
   title: string;
-  category: "Music" | "Sports" | "Hospitality & Events";
+  category: "Music" | "Sports" | "Hospitality & Events" | "Snow";
   dateAdded: string;
   active: boolean;
 };
@@ -305,6 +305,7 @@ function PortalDashboard({ onLogout }: { onLogout: () => void }) {
                 <option value="Music">Music</option>
                 <option value="Sports">Sports</option>
                 <option value="Hospitality & Events">Hospitality &amp; Events</option>
+                <option value="Snow">Snow</option>
               </select>
             </div>
 

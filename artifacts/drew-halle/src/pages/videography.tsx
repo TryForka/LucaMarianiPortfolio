@@ -98,6 +98,12 @@ const CATEGORIES: Category[] = [
     ],
   },
   {
+    key: "snow",
+    label: "SNOW",
+    sub: "Alpine · Winter landscapes · Outdoor adventure",
+    videos: [],
+  },
+  {
     key: "hospitality",
     label: "HOSPITALITY\n& EVENTS",
     sub: "Venues · Brand showcases · Weddings & celebrations",

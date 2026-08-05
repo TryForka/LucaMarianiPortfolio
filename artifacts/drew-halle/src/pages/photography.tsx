@@ -76,7 +76,6 @@ const CATEGORIES: PhotoCategory[] = [
     label: "SPORTS",
     sub: "Athletic campaigns · Event coverage · Action",
     photos: [],
-    hidden: true,
   },
   {
     key: "event",

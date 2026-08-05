@@ -13,4 +13,5 @@ export const RecentWorkItemCategory = {
   Music: 'Music',
   Sports: 'Sports',
   'Hospitality_&_Events': 'Hospitality & Events',
+  Snow: 'Snow',
 } as const;
