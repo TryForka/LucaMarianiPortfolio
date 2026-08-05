@@ -18,6 +18,10 @@ export const recentWorkTable = pgTable("recent_work", {
   category: recentWorkCategoryEnum("category").notNull(),
   dateAdded: timestamp("date_added").defaultNow().notNull(),
   active: boolean("active").default(true).notNull(),
+  // aspectRatio: "9/16" or "16/9" (for videos)
+  aspectRatio: text("aspect_ratio").default("16/9"),
+  // altText: used for artist name on photos (optional)
+  altText: text("alt_text"),
 });
 
 export const insertRecentWorkSchema = createInsertSchema(recentWorkTable).omit({ id: true, dateAdded: true });

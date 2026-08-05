@@ -1,146 +1,42 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
+import { useRef, useEffect } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
+import { useGetVideos } from "@workspace/api-client-react";
+
+// ── Constants ──────────────────────────────────────────────────────────────────
+
+const ALLOW_STD =
+  "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+const REF_STD = "strict-origin-when-cross-origin";
+
+// ── Types ──────────────────────────────────────────────────────────────────────
 
 type Video = {
   id: string;
   title: string;
   src: string;
-  aspect: "16/9" | "9/16";
-  allow?: string;
+  aspect: string;
+  allow: string;
   referrerPolicy?: string;
 };
 
-type Category = {
+type CategoryConfig = {
   key: string;
+  dbValue: string;
   label: string;
   sub: string;
-  videos: Video[];
 };
 
-const ALLOW_STD = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-const REF_STD = "strict-origin-when-cross-origin";
+// ── Category config ────────────────────────────────────────────────────────────
 
-const CATEGORIES: Category[] = [
-  {
-    key: "music",
-    label: "MUSIC",
-    sub: "Concert films · Live performances · Artist narratives",
-    videos: [
-      {
-        id: "m1",
-        title: "Red Clay Strays",
-        src: "https://www.youtube.com/embed/r_59JjsZaz4?controls=0&modestbranding=1&rel=0&playsinline=1",
-        aspect: "9/16",
-        allow: ALLOW_STD,
-      },
-    ],
-  },
-  {
-    key: "sports",
-    label: "SPORTS",
-    sub: "Athletic campaigns · Event coverage · Brand films",
-    videos: [
-      {
-        id: "s1",
-        title: "Roll South",
-        src: "https://www.youtube-nocookie.com/embed/XG2WVE4Y0cg?si=u48GD5YMB6n6GxiH&controls=0",
-        aspect: "16/9",
-        allow: ALLOW_STD,
-        referrerPolicy: REF_STD,
-      },
-      {
-        id: "s2",
-        title: "Glenbrook South Football",
-        src: "https://www.youtube-nocookie.com/embed/u4KPLhTTo3g?si=V7RTadZUw6uKyaJp&controls=0",
-        aspect: "16/9",
-        allow: ALLOW_STD,
-        referrerPolicy: REF_STD,
-      },
-      {
-        id: "s3",
-        title: "Glenbrook South Hockey",
-        src: "https://www.youtube-nocookie.com/embed/vSOkSNK1-E4?si=QA3ee9odZ2WRs7Jj&controls=0",
-        aspect: "16/9",
-        allow: ALLOW_STD,
-        referrerPolicy: REF_STD,
-      },
-      {
-        id: "s4",
-        title: "Crystal Ridge Park Follow Cam",
-        src: "https://www.youtube.com/embed/VwkKoKVDU3g?modestbranding=1&rel=0&playsinline=1&controls=0",
-        aspect: "9/16",
-        allow: ALLOW_STD,
-      },
-      {
-        id: "s5",
-        title: "Alpine Valley Park Follow Cam #1",
-        src: "https://www.youtube.com/embed/o5AmOaYRXjw?modestbranding=1&rel=0&playsinline=1&controls=0",
-        aspect: "9/16",
-        allow: ALLOW_STD,
-      },
-      {
-        id: "s6",
-        title: "Alpine Valley Park Follow Cam #3",
-        src: "https://www.youtube.com/embed/p-lvvaiAmOQ?modestbranding=1&rel=0&playsinline=1&controls=0",
-        aspect: "9/16",
-        allow: ALLOW_STD,
-      },
-      {
-        id: "s7",
-        title: "Alpine Valley Park Follow Cam #2",
-        src: "https://www.youtube.com/embed/_H6hO0xat2s?modestbranding=1&rel=0&playsinline=1&controls=0",
-        aspect: "9/16",
-        allow: ALLOW_STD,
-      },
-    ],
-  },
-  {
-    key: "snow",
-    label: "SNOW",
-    sub: "Alpine · Winter landscapes · Outdoor adventure",
-    videos: [],
-  },
-  {
-    key: "hospitality",
-    label: "HOSPITALITY\n& EVENTS",
-    sub: "Venues · Brand showcases · Weddings & celebrations",
-    videos: [
-      {
-        id: "h1",
-        title: "Ovvio",
-        src: "https://www.youtube-nocookie.com/embed/vXhoXWMxVr0?si=hyk8Th8K5eyMKj-_&controls=0",
-        aspect: "16/9",
-        allow: ALLOW_STD,
-        referrerPolicy: REF_STD,
-      },
-      {
-        id: "h2",
-        title: "Ovvio",
-        src: "https://www.youtube-nocookie.com/embed/STKgmNhSFP0?si=CTtxMoX7NUXfw3bd&controls=0",
-        aspect: "16/9",
-        allow: ALLOW_STD,
-        referrerPolicy: REF_STD,
-      },
-      {
-        id: "h3",
-        title: "Alpine Valley Resorts Wedding",
-        src: "https://www.youtube-nocookie.com/embed/ROQukR7EJgA?si=yfDztzVF7diBHTo4&controls=0",
-        aspect: "16/9",
-        allow: ALLOW_STD,
-        referrerPolicy: REF_STD,
-      },
-      {
-        id: "h4",
-        title: "Lake Forest Chiro",
-        src: "https://www.youtube.com/embed/xlhhCYGaEqo?si=3GockmbNT9IHYxb0&controls=0&modestbranding=1&rel=0&playsinline=1",
-        aspect: "9/16",
-        allow: ALLOW_STD,
-      },
-    ],
-  },
+const CATEGORY_CONFIG: CategoryConfig[] = [
+  { key: "music", dbValue: "Music", label: "MUSIC", sub: "Concert films · Live performances · Artist narratives" },
+  { key: "sports", dbValue: "Sports", label: "SPORTS", sub: "Athletic campaigns · Event coverage · Brand films" },
+  { key: "snow", dbValue: "Snow", label: "SNOW", sub: "Alpine · Winter landscapes · Outdoor adventure" },
+  { key: "hospitality", dbValue: "Hospitality & Events", label: "HOSPITALITY\n& EVENTS", sub: "Venues · Brand showcases · Weddings & celebrations" },
 ];
 
 // ── Cinema Player ──────────────────────────────────────────────────────────────
@@ -168,14 +64,12 @@ function CinemaPlayer({ video, onClose }: { video: Video; onClose: () => void })
     setMuted(next);
   }, [muted]);
 
-  // Escape key closes player
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  // Lock body scroll while open
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
@@ -191,20 +85,16 @@ function CinemaPlayer({ video, onClose }: { video: Video; onClose: () => void })
       className="fixed inset-0 z-[200] bg-black flex items-center justify-center"
       onClick={onClose}
     >
-      {/* Expanding video container */}
       <motion.div
         initial={{ scale: 0.55, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.85, opacity: 0 }}
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         className={`relative flex flex-col ${
-          isPortrait
-            ? "h-[88dvh] w-auto aspect-[9/16]"
-            : "w-[92vw] max-w-6xl aspect-video"
+          isPortrait ? "h-[88dvh] w-auto aspect-[9/16]" : "w-[92vw] max-w-6xl aspect-video"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* HUD top bar */}
         <div className="absolute -top-8 inset-x-0 flex items-center justify-between z-10 px-1">
           <button
             onClick={onClose}
@@ -218,7 +108,6 @@ function CinemaPlayer({ video, onClose }: { video: Video; onClose: () => void })
           </div>
         </div>
 
-        {/* Video frame */}
         <div className="relative w-full h-full border border-white/10 overflow-hidden bg-black">
           <iframe
             ref={iframeRef}
@@ -232,7 +121,6 @@ function CinemaPlayer({ video, onClose }: { video: Video; onClose: () => void })
           />
         </div>
 
-        {/* HUD bottom bar */}
         <div className="absolute -bottom-8 inset-x-0 flex items-center justify-between z-10 px-1">
           <p className="font-mono text-[10px] tracking-widest text-white/30 uppercase truncate max-w-[60%]">
             {video.title}
@@ -263,11 +151,11 @@ function CinemaPlayer({ video, onClose }: { video: Video; onClose: () => void })
   );
 }
 
-// ── Video Card (thumbnail only — cinema player handles playback) ───────────────
+// ── Video Card ─────────────────────────────────────────────────────────────────
 
 function VideoCard({ video, onPlay }: { video: Video; onPlay: (v: Video) => void }) {
   const isPortrait = video.aspect === "9/16";
-  const videoId = video.src.match(/\/embed\/([^?]+)/)?.[1] ?? "";
+  const videoId = video.src.match(/\/embed\/([^?/]+)/)?.[1] ?? "";
 
   return (
     <motion.div
@@ -288,8 +176,7 @@ function VideoCard({ video, onPlay }: { video: Video; onPlay: (v: Video) => void
           alt={video.title}
           className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
           onError={(e) => {
-            (e.target as HTMLImageElement).src =
-              `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
           }}
         />
         <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300" />
@@ -301,16 +188,12 @@ function VideoCard({ video, onPlay }: { video: Video; onPlay: (v: Video) => void
           </div>
         </div>
       </div>
-
-      {/* Title bar */}
       <div className="border border-t-0 border-white/10 px-3 py-2 bg-black">
         <p className="font-mono text-[9px] tracking-widest text-white/30 uppercase truncate">{video.title}</p>
       </div>
     </motion.div>
   );
 }
-
-// ── Placeholder ───────────────────────────────────────────────────────────────
 
 function PlaceholderCard() {
   return (
@@ -331,15 +214,38 @@ export default function Videography() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeVideo, setActiveVideo] = useState<Video | null>(null);
 
+  const { data: rawItems, isLoading } = useGetVideos();
+
+  // Group DB items into category buckets
+  const categories = useMemo(() => {
+    const byDbValue: Record<string, Video[]> = {};
+    (rawItems ?? []).forEach((item) => {
+      const key = item.category;
+      if (!byDbValue[key]) byDbValue[key] = [];
+      byDbValue[key].push({
+        id: String(item.id),
+        title: item.title,
+        src: item.embedUrl,
+        aspect: item.aspectRatio ?? "16/9",
+        allow: ALLOW_STD,
+        referrerPolicy: item.embedUrl.includes("nocookie") ? REF_STD : undefined,
+      });
+    });
+
+    return CATEGORY_CONFIG.map((cfg) => ({
+      ...cfg,
+      videos: byDbValue[cfg.dbValue] ?? [],
+    }));
+  }, [rawItems]);
+
   const filtered = activeCategory
-    ? CATEGORIES.filter((c) => c.key === activeCategory)
-    : CATEGORIES;
+    ? categories.filter((c) => c.key === activeCategory)
+    : categories;
 
   return (
     <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
       <Nav />
 
-      {/* Page header */}
       <header className="pt-32 pb-16 px-4 md:px-8 border-b border-white/10 max-w-[1600px] mx-auto">
         <div className="flex items-start justify-between">
           <div>
@@ -365,7 +271,6 @@ export default function Videography() {
           </div>
         </div>
 
-        {/* Category filter tabs */}
         <div className="flex flex-wrap gap-3 mt-12">
           <button
             onClick={() => setActiveCategory(null)}
@@ -377,7 +282,7 @@ export default function Videography() {
           >
             ALL
           </button>
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
@@ -393,8 +298,10 @@ export default function Videography() {
         </div>
       </header>
 
-      {/* Category sections */}
       <main className="max-w-[1600px] mx-auto px-4 md:px-8 py-16 space-y-24">
+        {isLoading && (
+          <p className="font-mono text-[10px] tracking-widest text-white/30 uppercase">LOADING...</p>
+        )}
         {filtered.map((cat, catIdx) => (
           <motion.section
             key={cat.key}
@@ -426,7 +333,7 @@ export default function Videography() {
               {cat.videos.map((v) => (
                 <VideoCard key={v.id} video={v} onPlay={setActiveVideo} />
               ))}
-              {cat.videos.length === 0 &&
+              {cat.videos.length === 0 && !isLoading &&
                 [0, 1, 2].map((i) => <PlaceholderCard key={i} />)}
             </div>
           </motion.section>
@@ -435,7 +342,6 @@ export default function Videography() {
 
       <Footer />
 
-      {/* Cinema player overlay */}
       <AnimatePresence>
         {activeVideo && (
           <CinemaPlayer video={activeVideo} onClose={() => setActiveVideo(null)} />

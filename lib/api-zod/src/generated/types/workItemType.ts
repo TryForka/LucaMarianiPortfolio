@@ -6,10 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type RecentWorkItemType = typeof RecentWorkItemType[keyof typeof RecentWorkItemType];
+export type WorkItemType = typeof WorkItemType[keyof typeof WorkItemType];
 
 
-export const RecentWorkItemType = {
+export const WorkItemType = {
   photo: 'photo',
   video: 'video',
 } as const;

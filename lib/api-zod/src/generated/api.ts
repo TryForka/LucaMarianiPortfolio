@@ -28,8 +28,44 @@ export const GetRecentWorkResponseItem = zod.object({
   "title": zod.string(),
   "category": zod.enum(['Music', 'Sports', 'Hospitality & Events', 'Snow']),
   "dateAdded": zod.coerce.date(),
-  "active": zod.boolean()
+  "active": zod.boolean(),
+  "aspectRatio": zod.string().nullish(),
+  "altText": zod.string().nullish()
 })
 export const GetRecentWorkResponse = zod.array(GetRecentWorkResponseItem)
+
+
+/**
+ * @summary Get all photo items for the photography page
+ */
+export const GetPhotosResponseItem = zod.object({
+  "id": zod.number(),
+  "type": zod.enum(['photo', 'video']),
+  "embedUrl": zod.string(),
+  "title": zod.string(),
+  "category": zod.enum(['Music', 'Sports', 'Hospitality & Events', 'Snow']),
+  "dateAdded": zod.coerce.date(),
+  "active": zod.boolean(),
+  "aspectRatio": zod.string().nullish(),
+  "altText": zod.string().nullish()
+})
+export const GetPhotosResponse = zod.array(GetPhotosResponseItem)
+
+
+/**
+ * @summary Get all video items for the videography page
+ */
+export const GetVideosResponseItem = zod.object({
+  "id": zod.number(),
+  "type": zod.enum(['photo', 'video']),
+  "embedUrl": zod.string(),
+  "title": zod.string(),
+  "category": zod.enum(['Music', 'Sports', 'Hospitality & Events', 'Snow']),
+  "dateAdded": zod.coerce.date(),
+  "active": zod.boolean(),
+  "aspectRatio": zod.string().nullish(),
+  "altText": zod.string().nullish()
+})
+export const GetVideosResponse = zod.array(GetVideosResponseItem)
 
 

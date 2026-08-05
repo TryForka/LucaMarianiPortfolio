@@ -1,0 +1,92 @@
+Five fixes to my portfolio site's recent work carousel and /portal admin page. The 
+most important one is #1 — read it first, since #2 depends on it. I am not deleting 
+any content; nothing currently on my site should disappear.
+
+=== 1. UNIFY THE DATA SOURCE (root cause of two bugs) ===
+
+Right now the site has two separate content sources: the original content on 
+/photography and /videography (hardcoded or stored separately), and the new 
+`recent_work` table. That split is why the portal can't see my existing work and why 
+portal uploads never appear on the work pages.
+
+Fix this by making ONE table the single source of truth for all portfolio content:
+- Copy every existing item from /photography and /videography into the `recent_work` 
+  table, preserving its type (photo/video), embed URL, title, and category. Backfill 
+  `date_added` so the current ordering on those pages is preserved.
+- Set `active = false` on copied items by default so the carousel doesn't suddenly 
+  fill with old work — I'll choose which ones to feature from the portal.
+- Rewrite /photography and /videography to read from this table instead of their old 
+  source. /photography shows all items where type = "photo"; /videography shows all 
+  items where type = "video". The existing All / Music / Sports / Hospitality & Events 
+  filters on each page filter by the `category` field.
+- Do NOT remove the original content source. Leave it in place, unused, as a backup. 
+  I'm not deleting anything — I just want my existing work to appear in the portal's 
+  manage list so I can edit it and choose which pieces to feature in the carousel.
+- The pages must look and behave exactly as they do now — same layout, grid, filters, 
+  and styling. Only the data source changes.
+
+=== 2. PORTAL UPLOADS MUST HIT THE WORK PAGES ===
+
+After #1, an entry added in the portal should automatically appear on the correct page:
+- Type "Photo" → appears on /photography, under the category selected
+- Type "Video" → appears on /videography, under the category selected
+
+The "Show in homepage carousel" checkbox should ONLY control whether the item also 
+appears in the homepage carousel. It must not control whether the item appears on its 
+work page — every entry appears on its work page regardless.
+
+Relabel the checkbox to make this obvious: "Also feature in homepage carousel."
+
+=== 3. FIX EDIT AND DELETE ===
+
+The edit and delete buttons in the manage list don't work. Fix them:
+- Edit opens the entry's values in an editable form, saves changes to the database, 
+  and refreshes the list to show the update
+- Delete asks for confirmation, then removes the row and refreshes the list
+- The active/hidden toggle should also save immediately and reflect the new state
+- Show a clear success or error message after each action
+
+=== 4. SIMPLIFY THE PORTAL UI ===
+
+The portal is hard to follow. Restructure it as two clearly separated sections with 
+obvious headers:
+
+"ADD NEW WORK" — the upload form, unchanged in function but with clearer labels:
+- TYPE: Photo / Video — with helper text: "Photo → appears on Photography page. 
+  Video → appears on Videography page."
+- LINK: with helper text explaining the expected format for each type
+- TITLE
+- CATEGORY: with helper text "Which filter this appears under on the work page."
+- "Also feature in homepage carousel" checkbox
+
+"MANAGE EXISTING WORK" — the list of all entries, with:
+- Filter tabs at the top: All / Photos / Videos, plus a toggle for "Featured in 
+  carousel only"
+- Each row: thumbnail, title, type, category, date, whether it's featured, and the 
+  edit / delete / feature-toggle actions
+- Sorted newest first
+
+Keep the visual style consistent with the rest of the site.
+
+=== 5. IMPROVE THE CAROUSEL DESIGN ===
+
+The carousel looks unpolished. Improve it:
+- Larger, consistently sized cards with a uniform aspect ratio so photo and video 
+  cards line up cleanly
+- Smooth scroll animation between cards, not a jump
+- Arrows should be clearly visible against the dark background and disable or hide at 
+  the start and end of the list
+- Add a subtle hover state on cards
+- Title and category label beneath each card, in the site's small-caps monospace label 
+  style
+- Consistent spacing above and below the section so it sits cleanly between the reel 
+  and "Select Work"
+- Must remain fully responsive on mobile
+
+=== ALSO ===
+
+Add rate limiting to the /portal login endpoint — lock out an IP for 15 minutes after 
+5 failed attempts.
+
+When you're done, tell me how to verify every existing item made it into the portal 
+correctly.
