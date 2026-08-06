@@ -13,6 +13,11 @@ if (!process.env.SESSION_SECRET) {
 
 const app: Express = express();
 
+// Trust one proxy hop so req.ip resolves to the real client IP from the
+// X-Forwarded-For header set by Vercel's edge and Replit's dev proxy.
+// Without this, req.ip is the proxy's address, not the browser's.
+app.set("trust proxy", 1);
+
 app.use(
   pinoHttp({
     logger,
