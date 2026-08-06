@@ -17,7 +17,7 @@ import type {
 
 import type {
   HealthStatus,
-  WorkItem
+  RecentWorkItem
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -122,9 +122,9 @@ export const getGetRecentWorkUrl = () => {
  * Returns active recent work items ordered by date_added DESC, limit 10
  * @summary Get active recent work items for carousel
  */
-export const getRecentWork = async ( options?: RequestInit): Promise<WorkItem[]> => {
+export const getRecentWork = async ( options?: RequestInit): Promise<RecentWorkItem[]> => {
 
-  return customFetch<WorkItem[]>(getGetRecentWorkUrl(),
+  return customFetch<RecentWorkItem[]>(getGetRecentWorkUrl(),
   {
     ...options,
     method: 'GET'
@@ -176,160 +176,6 @@ export function useGetRecentWork<TData = Awaited<ReturnType<typeof getRecentWork
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetRecentWorkQueryOptions(options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  return { ...query, queryKey: queryOptions.queryKey };
-}
-
-
-
-
-
-
-
-export const getGetPhotosUrl = () => {
-
-
-
-
-  return `/api/photos`
-}
-
-/**
- * @summary Get all photo items for the photography page
- */
-export const getPhotos = async ( options?: RequestInit): Promise<WorkItem[]> => {
-
-  return customFetch<WorkItem[]>(getGetPhotosUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
-
-
-
-export const getGetPhotosQueryKey = () => {
-    return [
-    `/api/photos`
-    ] as const;
-    }
-
-
-export const getGetPhotosQueryOptions = <TData = Awaited<ReturnType<typeof getPhotos>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPhotos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
-) => {
-
-const {query: queryOptions, request: requestOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetPhotosQueryKey();
-
-
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPhotos>>> = ({ signal }) => getPhotos({ signal, ...requestOptions });
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPhotos>>, TError, TData> & { queryKey: QueryKey }
-}
-
-export type GetPhotosQueryResult = NonNullable<Awaited<ReturnType<typeof getPhotos>>>
-export type GetPhotosQueryError = ErrorType<unknown>
-
-
-/**
- * @summary Get all photo items for the photography page
- */
-
-export function useGetPhotos<TData = Awaited<ReturnType<typeof getPhotos>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPhotos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-
-  const queryOptions = getGetPhotosQueryOptions(options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  return { ...query, queryKey: queryOptions.queryKey };
-}
-
-
-
-
-
-
-
-export const getGetVideosUrl = () => {
-
-
-
-
-  return `/api/videos`
-}
-
-/**
- * @summary Get all video items for the videography page
- */
-export const getVideos = async ( options?: RequestInit): Promise<WorkItem[]> => {
-
-  return customFetch<WorkItem[]>(getGetVideosUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
-
-
-
-export const getGetVideosQueryKey = () => {
-    return [
-    `/api/videos`
-    ] as const;
-    }
-
-
-export const getGetVideosQueryOptions = <TData = Awaited<ReturnType<typeof getVideos>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVideos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
-) => {
-
-const {query: queryOptions, request: requestOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetVideosQueryKey();
-
-
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getVideos>>> = ({ signal }) => getVideos({ signal, ...requestOptions });
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getVideos>>, TError, TData> & { queryKey: QueryKey }
-}
-
-export type GetVideosQueryResult = NonNullable<Awaited<ReturnType<typeof getVideos>>>
-export type GetVideosQueryError = ErrorType<unknown>
-
-
-/**
- * @summary Get all video items for the videography page
- */
-
-export function useGetVideos<TData = Awaited<ReturnType<typeof getVideos>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVideos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-
-  const queryOptions = getGetVideosQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

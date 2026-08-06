@@ -9,32 +9,31 @@ export interface HealthStatus {
   status: string;
 }
 
-export type WorkItemType = typeof WorkItemType[keyof typeof WorkItemType];
+export type RecentWorkItemType = typeof RecentWorkItemType[keyof typeof RecentWorkItemType];
 
 
-export const WorkItemType = {
+export const RecentWorkItemType = {
   photo: 'photo',
   video: 'video',
 } as const;
 
-export type WorkItemCategory = typeof WorkItemCategory[keyof typeof WorkItemCategory];
+export type RecentWorkItemCategory = typeof RecentWorkItemCategory[keyof typeof RecentWorkItemCategory];
 
 
-export const WorkItemCategory = {
+export const RecentWorkItemCategory = {
   Music: 'Music',
   Sports: 'Sports',
   'Hospitality_&_Events': 'Hospitality & Events',
+  Snow: 'Snow',
 } as const;
 
-export interface WorkItem {
+export interface RecentWorkItem {
   id: number;
-  type: WorkItemType;
+  type: RecentWorkItemType;
   embedUrl: string;
   title: string;
-  category: WorkItemCategory;
+  category: RecentWorkItemCategory;
   dateAdded: string;
   active: boolean;
-  aspectRatio?: string | null;
-  altText?: string | null;
 }
 

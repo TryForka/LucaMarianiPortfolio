@@ -7,6 +7,6 @@
  */
 
 export * from './healthStatus';
-export * from './workItem';
-export * from './workItemCategory';
-export * from './workItemType';
+export * from './recentWorkItem';
+export * from './recentWorkItemCategory';
+export * from './recentWorkItemType';

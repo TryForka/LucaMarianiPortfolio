@@ -12,8 +12,6 @@ tags:
     description: Health operations
   - name: recent-work
     description: Recent work carousel (public)
-  - name: work
-    description: Work pages content (public)
 paths:
   /healthz:
     get:
@@ -42,35 +40,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/WorkItem"
-  /photos:
-    get:
-      operationId: getPhotos
-      tags: [work]
-      summary: Get all photo items for the photography page
-      responses:
-        "200":
-          description: All photo items ordered by date_added DESC
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/WorkItem"
-  /videos:
-    get:
-      operationId: getVideos
-      tags: [work]
-      summary: Get all video items for the videography page
-      responses:
-        "200":
-          description: All video items ordered by date_added DESC
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/WorkItem"
+                  $ref: "#/components/schemas/RecentWorkItem"
 components:
   schemas:
     HealthStatus:
@@ -80,7 +50,7 @@ components:
           type: string
       required:
         - status
-    WorkItem:
+    RecentWorkItem:
       type: object
       properties:
         id:
@@ -94,18 +64,12 @@ components:
           type: string
         category:
           type: string
-          enum: ["Music", "Sports", "Hospitality & Events"]
+          enum: ["Music", "Sports", "Hospitality & Events", "Snow"]
         dateAdded:
           type: string
           format: date-time
         active:
           type: boolean
-        aspectRatio:
-          type: string
-          nullable: true
-        altText:
-          type: string
-          nullable: true
       required:
         - id
         - type

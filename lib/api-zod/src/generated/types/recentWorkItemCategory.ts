@@ -6,11 +6,12 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type WorkItemCategory = typeof WorkItemCategory[keyof typeof WorkItemCategory];
+export type RecentWorkItemCategory = typeof RecentWorkItemCategory[keyof typeof RecentWorkItemCategory];
 
 
-export const WorkItemCategory = {
+export const RecentWorkItemCategory = {
   Music: 'Music',
   Sports: 'Sports',
   'Hospitality_&_Events': 'Hospitality & Events',
+  Snow: 'Snow',
 } as const;

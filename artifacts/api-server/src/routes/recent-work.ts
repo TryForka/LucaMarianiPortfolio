@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, recentWorkTable } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 
 const router = Router();
 
@@ -18,38 +18,6 @@ router.get("/recent-work", async (req, res) => {
   } catch (err) {
     req.log.error({ err }, "Failed to fetch recent work");
     res.status(500).json({ error: "Failed to fetch recent work" });
-  }
-});
-
-// Public: all photos for the photography page
-router.get("/photos", async (req, res) => {
-  try {
-    const items = await db
-      .select()
-      .from(recentWorkTable)
-      .where(eq(recentWorkTable.type, "photo"))
-      .orderBy(desc(recentWorkTable.dateAdded));
-
-    res.json(items);
-  } catch (err) {
-    req.log.error({ err }, "Failed to fetch photos");
-    res.status(500).json({ error: "Failed to fetch photos" });
-  }
-});
-
-// Public: all videos for the videography page
-router.get("/videos", async (req, res) => {
-  try {
-    const items = await db
-      .select()
-      .from(recentWorkTable)
-      .where(eq(recentWorkTable.type, "video"))
-      .orderBy(desc(recentWorkTable.dateAdded));
-
-    res.json(items);
-  } catch (err) {
-    req.log.error({ err }, "Failed to fetch videos");
-    res.status(500).json({ error: "Failed to fetch videos" });
   }
 });
 
