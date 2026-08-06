@@ -1,0 +1,1 @@
+- [Vercel + pnpm monorepo API deployment](vercel-api-deployment.md) — one Express-wrapping serverless function, not per-route files; external Postgres for Vercel prod, separate from Replit's dev DB.

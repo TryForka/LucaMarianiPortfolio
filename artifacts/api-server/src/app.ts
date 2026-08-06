@@ -5,6 +5,12 @@ import cookieParser from "cookie-parser";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
+if (!process.env.SESSION_SECRET) {
+  throw new Error(
+    "SESSION_SECRET must be set. It is used to sign the portal session cookie.",
+  );
+}
+
 const app: Express = express();
 
 app.use(
@@ -28,7 +34,7 @@ app.use(
 );
 
 app.use(cors({ origin: true, credentials: true }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

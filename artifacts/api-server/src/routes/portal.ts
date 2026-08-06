@@ -1,30 +1,35 @@
 import { Router, type Request } from "express";
 import { db, recentWorkTable, insertRecentWorkSchema, updateRecentWorkSchema } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
-import crypto from "crypto";
 
 const router = Router();
 
-// In-memory session store: token -> { createdAt }
-const sessions = new Map<string, { createdAt: number }>();
-
+// Sessions are a signed cookie holding the login timestamp — no server-side
+// store. Signing (via cookie-parser + SESSION_SECRET) proves the cookie was
+// issued by this server and wasn't tampered with; the embedded timestamp
+// enforces expiry. This works identically across separate serverless
+// invocations, unlike an in-memory session map.
 const SESSION_COOKIE = "portal_session";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 8; // 8 hours
 
-function generateToken(): string {
-  return crypto.randomBytes(32).toString("hex");
-}
+const SESSION_COOKIE_OPTIONS = {
+  httpOnly: true,
+  signed: true,
+  sameSite: "lax" as const,
+  secure: process.env.NODE_ENV === "production",
+};
 
 function isAuthenticated(req: Request): boolean {
-  const token = req.cookies?.[SESSION_COOKIE] as string | undefined;
-  if (!token) return false;
-  const session = sessions.get(token);
-  if (!session) return false;
-  if (Date.now() - session.createdAt > SESSION_TTL_MS) {
-    sessions.delete(token);
-    return false;
-  }
-  return true;
+  const issuedAtRaw = req.signedCookies?.[SESSION_COOKIE] as string | undefined;
+  if (!issuedAtRaw) return false;
+  const issuedAt = Number(issuedAtRaw);
+  if (!Number.isFinite(issuedAt)) return false;
+  const now = Date.now();
+  // Reject timestamps in the future — a valid signature only proves the
+  // cookie was issued by us, not that `issuedAt` is sane, and without this
+  // check a future-dated value would never expire.
+  if (issuedAt > now) return false;
+  return now - issuedAt < SESSION_TTL_MS;
 }
 
 // POST /api/portal/login
@@ -42,14 +47,9 @@ router.post("/portal/login", (req, res) => {
     return;
   }
 
-  const token = generateToken();
-  sessions.set(token, { createdAt: Date.now() });
-
-  res.cookie(SESSION_COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
+  res.cookie(SESSION_COOKIE, String(Date.now()), {
+    ...SESSION_COOKIE_OPTIONS,
     maxAge: SESSION_TTL_MS,
-    secure: process.env.NODE_ENV === "production",
   });
 
   res.json({ ok: true });
@@ -57,9 +57,10 @@ router.post("/portal/login", (req, res) => {
 
 // POST /api/portal/logout
 router.post("/portal/logout", (req, res) => {
-  const token = req.cookies?.[SESSION_COOKIE];
-  if (token) sessions.delete(token as string);
-  res.clearCookie(SESSION_COOKIE);
+  // clearCookie must be called with the same attributes used when the
+  // cookie was set (path/sameSite/secure), otherwise browsers will not
+  // recognize it as the same cookie and won't delete it.
+  res.clearCookie(SESSION_COOKIE, SESSION_COOKIE_OPTIONS);
   res.json({ ok: true });
 });
 
