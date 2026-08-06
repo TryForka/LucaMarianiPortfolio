@@ -1,0 +1,53 @@
+I'm deploying this project to Vercel. Last time I tried, I ran into a lot of issues. 
+Audit the project for Vercel compatibility and fix anything that will break in a 
+serverless production environment. Go through this list specifically:
+
+DATABASE
+- What database is this project using, and is it reachable from outside Replit? If 
+  it's Replit's built-in database, tell me plainly whether it will work on Vercel, and 
+  if not, what I need to migrate to and how.
+- Confirm the connection uses a pooled connection string. Serverless functions open 
+  many short-lived connections and will exhaust a non-pooled pool.
+- Make sure the connection is reused across invocations rather than opened fresh on 
+  every request.
+
+ENVIRONMENT VARIABLES
+- List every environment variable this project needs, what each one does, and which 
+  ones I must set in Vercel.
+- Confirm none are hardcoded anywhere in the source, and that nothing depends on a 
+  Replit-specific variable that won't exist on Vercel.
+- Flag any variable that needs the NEXT_PUBLIC_ prefix versus one that must stay 
+  server-only.
+
+SERVERLESS CONSTRAINTS
+- Remove any dependency on a persistent local filesystem — writes to disk do not 
+  persist on Vercel.
+- Remove any in-memory state that assumes a long-running server (in-memory sessions, 
+  caches, or rate-limit counters). The portal session and the login rate limiting must 
+  work across serverless invocations, so they need cookie-based or database-backed 
+  storage.
+- Remove anything that assumes a fixed port or an always-on process.
+
+BUILD AND CONFIG
+- Confirm the build command, output directory, and framework settings are correct for 
+  Vercel, and tell me exactly what to enter in the Vercel project settings.
+- Run a production build locally and fix every error and type error it surfaces. Do 
+  not leave errors suppressed or ignored in the config.
+- Confirm all dependencies are in `dependencies` where needed, not misplaced in 
+  `devDependencies`.
+- Confirm the Node version specified in the project is one Vercel supports.
+- Check that no imports are case-mismatched. Replit is case-insensitive on filenames 
+  and Vercel is not — this breaks builds that work locally.
+
+ROUTES AND ASSETS
+- Verify every API route works in a serverless context and returns proper status codes.
+- Confirm images and static assets load from paths that will resolve in production, 
+  not from local absolute paths.
+- Confirm /portal is still excluded from robots.txt and unlinked in the production 
+  build.
+
+WHEN DONE
+Give me a numbered, step-by-step checklist of exactly what I do on Vercel's side, in 
+order: settings to configure, environment variables to add with which values, and what 
+to test immediately after the first deploy to confirm the portal, the carousel, and 
+both work pages are functioning.
