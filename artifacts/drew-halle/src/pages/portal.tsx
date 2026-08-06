@@ -37,7 +37,7 @@ const EMPTY_FORM: FormState = {
   altText: "",
 };
 
-const CATEGORIES = ["Music", "Sports", "Hospitality & Events", "Snow"];
+const CATEGORIES = ["Music", "Sports", "Hospitality & Events"];
 
 // ── API helpers ────────────────────────────────────────────────────────────────
 

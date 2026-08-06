@@ -94,7 +94,7 @@ components:
           type: string
         category:
           type: string
-          enum: ["Music", "Sports", "Hospitality & Events", "Snow"]
+          enum: ["Music", "Sports", "Hospitality & Events"]
         dateAdded:
           type: string
           format: date-time

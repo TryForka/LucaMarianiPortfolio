@@ -25,8 +25,7 @@ type PhotoCategory = {
 
 const CATEGORY_CONFIG: PhotoCategory[] = [
   { key: "music", dbValue: "Music", label: "MUSIC", sub: "Concert films · Live performances · Artist portraits" },
-  { key: "snow", dbValue: "Snow", label: "SNOW", sub: "Alpine · Winter landscapes · Nature" },
-  { key: "sports", dbValue: "Sports", label: "SPORTS", sub: "Athletic campaigns · Event coverage · Action" },
+  { key: "sports", dbValue: "Sports", label: "SPORTS", sub: "Athletic campaigns · Alpine & winter · Action" },
   { key: "event", dbValue: "Hospitality & Events", label: "EVENTS", sub: "Venues · Brand showcases · Celebrations" },
 ];
 

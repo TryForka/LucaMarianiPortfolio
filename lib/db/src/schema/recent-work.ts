@@ -7,7 +7,6 @@ export const recentWorkCategoryEnum = pgEnum("recent_work_category", [
   "Music",
   "Sports",
   "Hospitality & Events",
-  "Snow",
 ]);
 
 export const recentWorkTable = pgTable("recent_work", {
