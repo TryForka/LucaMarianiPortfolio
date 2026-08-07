@@ -27,10 +27,15 @@ dashboard.
 
 - **Framework preset:** Vercel auto-detects Express from `server.ts` (its
   zero-config Node.js backend support) — no framework preset to choose.
-- **Root directory:** the repository root (do not set it to `artifacts/drew-halle`
-  — the build command needs to run from the monorepo root so it can reach
-  `artifacts/api-server` and `lib/db`, and `server.ts` must be at the project
-  root for Vercel's entrypoint detection to find it).
+- **Root directory:** the repository root (leave it blank/unset). `server.ts`
+  must be at the project root for Vercel's entrypoint detection to find it,
+  and `lib/db` / `artifacts/api-server` need to be reachable from there. The
+  build command (`vercel-build.sh`, invoked via `pnpm -w exec bash
+  vercel-build.sh`) is written to work correctly even if this setting is
+  accidentally left pointing at a subfolder — pnpm's `-w` flag forces the
+  build to run from the real monorepo root regardless — but if the build
+  ever fails with an error mentioning "Root Directory", check this setting
+  first.
 - **Node.js version:** pinned via `"engines": { "node": "24.x" }` in the root
   `package.json`. Vercel reads this automatically; no manual setting needed.
 

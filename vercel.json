@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm --filter @workspace/drew-halle run build && rm -rf public && cp -r artifacts/drew-halle/dist/public ./public",
+  "buildCommand": "pnpm -w exec bash vercel-build.sh",
   "env": {
     "BASE_PATH": "/"
   }
