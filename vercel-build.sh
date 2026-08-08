@@ -28,3 +28,23 @@ fi
 
 rm -rf public
 cp -r "$BUILD_OUTPUT" ./public
+
+# Pre-bundle server.ts into a single self-contained server.js (see
+# server-build.mjs for why: Vercel's zero-config Node backend transpiles a
+# TS entrypoint without adding the file extensions Node's ESM resolver
+# requires on relative imports, which crashes every request at runtime even
+# though the build succeeds). Bundling here inlines all local relative
+# imports, so none are left for that transpile step to mishandle.
+pnpm exec node ./server-build.mjs
+
+if [ ! -f "server.js" ]; then
+  echo "" >&2
+  echo "ERROR: server-build.mjs did not produce server.js at the repo root." >&2
+  exit 1
+fi
+
+# Remove the TS source from the build output so Vercel's entrypoint
+# detection unambiguously picks up the pre-bundled server.js instead of
+# re-transpiling server.ts itself. This only affects this ephemeral build
+# directory, not the git-tracked source.
+rm -f server.ts

@@ -17,6 +17,13 @@ Replit's own dev database is internal-only and unreachable from Vercel. This pro
 
 **How to apply:** Whenever the Drizzle schema changes, push it to both databases — the Replit dev one and the external Vercel one — they do not sync automatically and will drift otherwise.
 
+## Zero-config Node backend transpiles per-file, not bundled — breaks ESM relative imports
+Vercel's zero-config Node.js backend (the `server.ts`-at-root pattern above) transpiles the TS entrypoint and everything it imports file-by-file, mirroring the source tree, rather than bundling into one file. That transpile does not rewrite relative import specifiers to add `.js` extensions. The build reports success, but every request 500s at runtime with `ERR_MODULE_NOT_FOUND` (Node ESM's resolver requires extensions on relative imports; TS's `bundler` moduleResolution used for local dev/typecheck does not enforce this, so it's invisible until it's actually deployed).
+
+**Why:** Node's ESM loader and TypeScript's `bundler` resolution disagree on this, and Vercel's zero-config transpile doesn't reconcile the difference — it's a straight per-file transpile, not a bundler.
+
+**How to apply:** Pre-bundle the entrypoint yourself with esbuild (`bundle: true`, `platform: "node"`, `format: "esm"`) before Vercel's own build/detection step ever sees it, so all local relative imports are inlined and only bare package specifiers remain (those resolve fine via `node_modules` regardless of extension). Then delete the `.ts` source from the build output so Vercel's entrypoint detection unambiguously picks up the pre-bundled `.js` file instead of re-transpiling the source. If the app uses `pino`/`pino-http`, reuse `esbuild-plugin-pino` (needs `outdir`, not `outfile`, since it emits extra worker-thread entry points) and the same native/unbundleable-package `external` allowlist as any existing esbuild config in the repo.
+
 ## Serverless-safe patterns to preserve
 - Size DB connection pools down (fewer max connections, shorter idle timeout) when running serverless vs. a persistent process, and always attach an error handler to the pool — an unhandled idle-connection error otherwise crashes the whole process.
 - Any server-side session state must be stateless (e.g. a signed cookie carrying just an issued-at timestamp) rather than kept in an in-memory store, since serverless invocations don't share memory across requests. Validate that timestamp isn't in the future (not just "not yet expired"), and pass the exact same cookie options to `clearCookie` as were used on `res.cookie`, or browsers won't remove it.

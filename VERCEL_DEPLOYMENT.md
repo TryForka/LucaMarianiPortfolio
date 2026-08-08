@@ -8,6 +8,28 @@ directly — no `api/` folder or `vercel.json` rewrites are involved, so there's
 no risk of a rewrite stripping the `/api` prefix from a request path. Follow
 these steps in order.
 
+## Why `server.ts` gets pre-bundled before Vercel sees it
+
+`vercel-build.sh` runs `server-build.mjs`, which uses esbuild to bundle
+`server.ts` (and everything it imports — `artifacts/api-server`, `lib/db`,
+etc.) into a single self-contained `server.js` at the repo root, then removes
+`server.ts` from the build output. This is required, not optional:
+
+Vercel's zero-config Node backend transpiles a TS entrypoint file-by-file,
+mirroring the source tree, rather than bundling it into one file — and that
+transpile does not add file extensions to relative import specifiers. Node's
+ESM runtime resolver (unlike TypeScript's `bundler` resolution used for local
+dev/typecheck) requires relative imports to include their extension, so an
+un-rewritten `import app from "./artifacts/api-server/src/app"` throws
+`ERR_MODULE_NOT_FOUND` on every request in production, even though the Vercel
+build itself reports success. Pre-bundling with esbuild inlines all local
+relative imports ourselves, so none are left for Vercel's transpile step to
+mishandle — only bare package specifiers (`express`, `pg`, etc.) remain,
+which Node resolves via `node_modules` regardless of extensions. See the
+comment at the top of `server-build.mjs` for the full explanation, and
+`artifacts/api-server/build.mjs` for the equivalent (and original) pattern
+this mirrors.
+
 ## 1. Environment variables (Vercel Project Settings → Environment Variables)
 
 Set these for the **Production** environment (and Preview, if you want preview
@@ -43,9 +65,11 @@ dashboard.
 
 Push to the branch connected to your Vercel project (or run `vercel --prod`
 from the CLI once linked). Vercel will:
-1. Run the `buildCommand` in `vercel.json`, which builds the Vite frontend and
-   copies its output into `public/`.
-2. Detect `server.ts` as an Express entrypoint, bundle it as a single Node
+1. Run the `buildCommand` in `vercel.json` (`vercel-build.sh`), which builds
+   the Vite frontend into `public/`, then runs `server-build.mjs` to bundle
+   `server.ts` into a single `server.js` and removes `server.ts` from the
+   build output (see "Why `server.ts` gets pre-bundled" above).
+2. Detect `server.js` as the Node entrypoint, deploy it as a single Node
    function, and route every request to it — static files under `public/`
    are served directly without invoking the function; everything else
    (`/api/*` and client-side routes) reaches the Express app with its
